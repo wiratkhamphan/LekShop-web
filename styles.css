@@ -1,0 +1,117 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Prompt', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #ffe6cc;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.login-box {
+  background-color: #fffef5;
+  border: 2px solid #f0c36d;
+  border-radius: 20px;
+  padding: 40px 30px;
+  width: 350px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+/* .login-box:hover {
+  transform: translateY(-4px);
+} */
+
+.login-box img {
+  display: block;
+  margin: 0 auto 15px auto;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.login-box h2 {
+  margin-bottom: 28px;
+  color: #444;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  background-color: #fffaf0;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1rem;
+}
+
+/* ใช้ focus-visible เพื่อแสดงเมื่อโฟกัสด้วยคีย์บอร์ด */
+.login-box input:focus-visible {
+  border-color: #f57c00;
+  box-shadow: 0 0 5px rgba(245, 124, 0, 0.5);
+  outline: none;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 24px;
+  background: linear-gradient(to right, #ff5722, #ff9800);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+  box-shadow: 0 4px 6px rgba(255, 121, 18, 0.5);
+}
+
+.login-btn:hover {
+  background: linear-gradient(to right, #e64a19, #ff7043);
+  transform: scale(1.04);
+  box-shadow: 0 6px 10px rgba(230, 74, 25, 0.7);
+}
+
+.forgot-password {
+  font-size: 0.85em;
+  color: #888;
+  margin-top: 14px;
+  cursor: pointer;
+  transition: color 0.3s;
+  user-select: none;
+}
+
+.forgot-password:hover {
+  color: #f57c00;
+}
+
+/* Responsive สำหรับมือถือ */
+@media (max-width: 400px) {
+  .login-box {
+    width: 90%;
+    padding: 30px 20px;
+  }
+
+  .login-box h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .login-btn {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}
