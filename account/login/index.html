@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="login-box">
+      <div class="logo">eK</div>
+      <h2>Welcome</h2>
+      <p>Log in to continue to LeK Sports</p>
+
+      <form onsubmit="return validateForm()">
+        <input type="text" id="username" placeholder="Email" />
+        <div class="error-message" id="emailError">Please enter your email</div>
+
+        <div class="password-wrapper">
+          <input type="password" id="password" placeholder="Password" />
+          <span class="toggle-password" onclick="togglePassword(this)">👁️</span>
+        </div>
+        <div class="error-message" id="passwordError">Please enter your password</div>
+
+        <a href="#" class="forgot-link">Forgot password?</a>
+
+        <button type="button" class="btn" id="loginBtn" onclick="login()">LOGIN</button>
+
+        <div class="signup-text">
+          Don’t have an account? <a href="/account/signup/">Sign up</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/account/env/env.js"></script>
+  <script src="login.js"></script>
+</body>
+
+</html>

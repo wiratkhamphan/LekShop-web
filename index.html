@@ -1,78 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th" class="theme-navy">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เข้าสู่ระบบ</title>
-    <link rel="stylesheet" href="styles.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POS Dashboard</title>
 </head>
+
 <body>
-     <div class="login-box">
-        <img src="/img/tool-icon.png" alt="icon" />
-        <h2>เข้าสู่ระบบ</h2>
 
-        <input type="text" id="username" placeholder="Username" />
-        <input type="password" id="password" placeholder="Password" />
+  <div class="sidebar-user px-3 py-2 text-white">
+    👤 <span id="EmployeeID">กำลังโหลด...</span><br>
+    🏢 <span id="name">...</span>
+  </div>
+  <button onclick="logout()" class="btn btn-outline-light mt-3">🔓 ออกจากระบบ</button>
 
-        <div class="forgot-password">ลืมรหัสผ่าน</div>
-
-        <button type="button" class="login-btn" onclick="login()">> LOGIN</button>
-    </div>
-
-    <script>
-        async function login() {
-            const employee_id = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-
-            if (!employee_id || !password) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'กรุณากรอกข้อมูลให้ครบ',
-                    text: 'ต้องกรอกทั้ง Username และ Password',
-                });
-                return;
-            }
-
-            try {
-                const res = await fetch("https://api-doc-ftey.onrender.com/Login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ employee_id, password })
-                });
-
-                const data = await res.json();
-
-                if (res.ok) {
-                    // ✅ สำเร็จ
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'เข้าสู่ระบบสำเร็จ',
-                        text: 'กำลังเข้าสู่ระบบ...',
-                        confirmButtonText: 'ตกลง'
-                    }).then(() => {
-                        window.location.href = "home.html";
-                    });
-                } else {
-                    // ❌ ล้มเหลว
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'เข้าสู่ระบบไม่สำเร็จ',
-                        text: data?.error || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
-                    });
-                }
-
-
-
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
-                });
-            }
-        }
-    </script>
-
+  
+  <script src="/account/env/env.js"></script>
+  <script src="/js/script.js"></script>
 </body>
+
 </html>
