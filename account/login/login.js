@@ -66,6 +66,7 @@ async function login() {
 
     if (res.ok) {
       localStorage.setItem("employee_id", employee_id);
+      localStorage.setItem("token", data.token);
       Swal.fire({
         icon: 'success',
         title: 'เข้าสู่ระบบสำเร็จ',
@@ -73,7 +74,7 @@ async function login() {
         showConfirmButton: false,
         timer: 1500
       }).then(() => {
-        window.location.href = "/";
+        window.location.href = "/account/";
       });
     } else {
       employeeInput.classList.add("input-error");

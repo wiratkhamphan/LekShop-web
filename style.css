@@ -1,0 +1,139 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #eaeaea;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            border-bottom: 1px solid #eee;
+            background-color: #fff;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+        .logo a{
+            color: #000;
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-size: 14px;
+            color: #555;
+            margin-left: 4px;
+        }
+
+        .nav-links {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-links a:hover{
+            color: #ff0000;
+        }
+        .center-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .center-menu li a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-icons input[type="text"] {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .nav-icons i {
+            font-size: 18px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Yellow Bar */
+        .yellow-bar {
+            background: linear-gradient(to right, #ffed00, #e9e89c);
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+
+        .highlight-section {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(to right, #eaeaea, #fff);
+        }
+
+        .highlight-section h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .highlight-section p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .highlight-section button {
+            background-color: #000;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                order: 2;
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            .nav-icons {
+                order: 3;
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 10px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        
