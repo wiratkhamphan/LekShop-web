@@ -4,52 +4,72 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JD Sports Navbar</title>
-    <link rel="stylesheet" href="/style.css" />
-    <link rel="stylesheet" href="/css/style.css" />
+    <title>ข้อมูลลูกค้า</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- เมนู -->
+    <link rel="stylesheet" href="/style.css" /> 
+<link rel="stylesheet" href="style.css" /> 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 </head>
 
-<body>
-    <header class="navbar">
-        <div class="logo"><a href="/">eK <span>SPORTS</span></a></div>
 
-        <nav class="nav-links">
-            <ul class="center-menu">
-                <li><a href="#">ผู้ชาย</a></li>
-                <li><a href="#">ผู้หญิง</a></li>
-                <li><a href="#">เด็ก</a></li>
-                <li><a href="#">แบรนด์</a></li>
-                <li><a href="#" style="color: red;">SALE</a></li>
-            </ul>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo"><span class="logo-text" style="color: aliceblue;">Sneaker<span>Hub</span></span>
+            <img src="/img/logo/Line.png" alt="SneakerHub" class="logo-img" />
+        </div>
+        <nav class="nav">
+            <a href="#">หน้าแรก</a>
+            <a href="#">สินค้า</a>
+            <a href="#">โปรโมชั่น</a>
+            <a href="#">ติดต่อเรา</a>
         </nav>
 
-        <div class="nav-icons">
-            <input type="text" placeholder="ค้นหา...">
-            <i class="fas fa-search"></i>
-            <i class="fas fa-user"></i>
+        <div class="header-right">
+            <div class="search-box">
+                <input type="text" placeholder="ค้นหา...">
+                <i class="fas fa-search"></i>
+            </div>
             <i class="fas fa-shopping-cart"></i>
+            <a href="/account/"><i class="fas fa-user"></i></a>
         </div>
+
+        <div class="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+
     </header>
-    <!-- Yellow Bar -->
-    <div class="yellow-bar">
-        <marquee>📢 อัปเดตรองเท้ามาใหม่ | เสื้อผ้ายอดนิยม | ส่งฟรีทั่วไทย ไม่มีขั้นต่ำ 📦</marquee>
+
+
+  <div class="profile-card">
+    <div class="profile-header">
+        <i class="fas fa-user-circle"></i>
+        <h2>ข้อมูลลูกค้า</h2>
     </div>
+    <div class="profile-info">
+        <p><i class="fas fa-id-card"></i> <strong>ชื่อ:</strong> <span id="customerName">-</span></p>
+        <p><i class="fas fa-envelope"></i> <strong>อีเมล:</strong> <span id="customerEmail">-</span></p>
+        <p><i class="fas fa-phone"></i> <strong>เบอร์โทร:</strong> <span id="customerPhone">-</span></p>
+        <p><i class="fas fa-calendar-alt"></i> <strong>วันที่สมัคร:</strong> <span id="customerJoin">-</span></p>
+    </div>
+    <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+    </button>
+</div>
 
-    <section class="highlight-section">
- <div class="sidebar-user px-3 py-2 text-white">
-    👤 <span id="EmployeeID">กำลังโหลด...</span><br>
-    🏢 <span id="name">...</span>
-  </div>
-  <button onclick="logout()" class="btn btn-outline-light mt-3">🔓 ออกจากระบบ</button>
 
-  
-  
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 SneakerHub. All rights reserved.</p>
+    </footer>
 
-    </section>
-      <script src="/account/env/env.js"></script>
-  <script src="script.js"></script>
+
+    <script src="/account/env/env.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

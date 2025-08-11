@@ -1,0 +1,80 @@
+body {
+    background: #f5f6fa;
+    font-family: "Prompt", sans-serif;
+}
+
+/* การ์ดโปรไฟล์ */
+.profile-card {
+    max-width: 500px;
+    margin: 40px auto;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    overflow: hidden;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.profile-card:hover {
+    transform: translateY(-5px);
+}
+
+/* ส่วนหัวโปรไฟล์ */
+.profile-header {
+    margin-bottom: 20px;
+}
+.profile-header i {
+    font-size: 80px;
+    color: #ff4b2b;
+    background: white;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.profile-header h2 {
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* ข้อมูลลูกค้า */
+.profile-info {
+    text-align: left;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+    margin-top: 10px;
+}
+.profile-info p {
+    margin: 12px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #555;
+}
+.profile-info i {
+    color: #ff4b2b;
+}
+
+/* ปุ่มออกจากระบบ */
+.logout-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255,65,108,0.3);
+    transition: all 0.3s ease;
+}
+.logout-btn:hover {
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+    transform: scale(1.03);
+}

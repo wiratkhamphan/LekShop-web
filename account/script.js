@@ -9,10 +9,10 @@ function getElementById() {
     const jwttoken = localStorage.getItem("token");
 
     // 👉 ถ้าไม่มี JWT token ให้ redirect ไปหน้า login
-    if (!jwttoken) {
-      window.location.href = "/account/login/";
-      return;
-    }
+    // if (!jwttoken) {
+    //   window.location.href = "/account/login/";
+    //   return;
+    // }
 
     // ✅ เรียก API พร้อมแนบ Authorization header
     fetch(`${BASE_URL}employees/${employee_id}`, {
@@ -36,7 +36,7 @@ function getElementById() {
         // ลบ JWT ที่อาจหมดอายุ/ไม่ถูกต้อง แล้วกลับไป login
         localStorage.removeItem("employee_id");
         localStorage.removeItem("token");
-        window.location.href = "/account/login/";
+        // window.location.href = "/account/login/";
       });
   });
 }
