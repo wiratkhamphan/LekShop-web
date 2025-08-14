@@ -62,9 +62,9 @@
         </thead>
         <tbody id="popularTable"></tbody>
     </table>
-
+<script src="/account/env/env.js"></script>
     <script>
-        const API_BASE = "http://localhost:8080";
+        const API_BASE = ENV.api;
 
         // โหลดข้อมูลทั้งหมด
         async function loadPopularItems() {
