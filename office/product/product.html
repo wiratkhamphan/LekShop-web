@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>จัดการสินค้า</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+th { background-color: #f4f4f4; }
+button { padding: 5px 10px; margin: 2px; cursor: pointer; }
+.recommended { color: green; font-weight: bold; }
+form { margin-bottom: 20px; }
+form input, form select { margin: 5px; padding: 5px; }
+</style>
+</head>
+<body>
+
+<h1>จัดการสินค้า</h1>
+
+<!-- ฟอร์มเพิ่มสินค้า -->
+<form id="addProductForm">
+    <input type="text" name="product_id" placeholder="รหัสสินค้า" required>
+    <input type="text" name="name" placeholder="ชื่อสินค้า" required>
+    <input type="number" name="quantity" placeholder="จำนวน" required>
+    <input type="number" step="0.01" name="cost_price" placeholder="ราคาทุน" required>
+    <input type="number" step="0.01" name="sell_price" placeholder="ราคาขาย" required>
+    <input type="file" name="image" required>
+    <select name="recommended">
+        <option value="false">ไม่แนะนำ</option>
+        <option value="true">แนะนำ</option>
+    </select>
+    <button type="submit">เพิ่มสินค้า</button>
+</form>
+
+<table id="productTable">
+    <thead>
+        <tr>
+            <th>รูป</th>
+            <th>รหัสสินค้า</th>
+            <th>ชื่อสินค้า</th>
+            <th>จำนวน</th>
+            <th>ราคาทุน</th>
+            <th>ราคาขาย</th>
+            <th>สินค้าแนะนำ</th>
+            <th>จัดการ</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<script src="/account/env/env.js"></script>
+<script>
+const BASE_URL = ENV.api;
+
+// โหลดสินค้า
+async function loadProducts() {
+    try {
+        const res = await fetch(`${BASE_URL}/stock`);
+        const data = await res.json();
+        const tbody = document.querySelector("#productTable tbody");
+        tbody.innerHTML = "";
+
+        data.products.forEach(p => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+        <td><img src="${BASE_URL}${p.image}" width="50"/></td>
+        <td>${p.product_id}</td>
+        <td>${p.name}</td>
+        <td>${p.quantity}</td>
+        <td>${p.cost_price}</td>
+        <td>${p.sell_price}</td>
+        <td class="${p.recommended ? 'recommended' : ''}">${p.recommended ? '✔' : '✖'}</td>
+        <td>
+            <button onclick="toggleRecommended('${p.product_id}', ${!p.recommended})">
+                ${p.recommended ? 'ยกเลิกแนะนำ' : 'ตั้งแนะนำ'}
+            </button>
+            <button onclick="deleteProduct('${p.product_id}')">ลบ</button>
+        </td>
+    `;
+    tbody.appendChild(tr);
+});
+
+    } catch (err) {
+        console.error(err);
+        alert("โหลดสินค้าล้มเหลว");
+    }
+}
+
+// เพิ่มสินค้า
+document.getElementById("addProductForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    try {
+        await fetch(`${BASE_URL}/stock`, { method: "POST", body: formData });
+        form.reset();
+        loadProducts();
+    } catch (err) {
+        console.error(err);
+        alert("เพิ่มสินค้าล้มเหลว");
+    }
+});
+
+// ตั้ง/ยกเลิกสินค้าแนะนำ
+async function toggleRecommended(product_id, recommended) {
+    try {
+        await fetch(`${BASE_URL}/products/${product_id}/recommended`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ recommended })
+        });
+        loadProducts();
+    } catch (err) {
+        console.error(err);
+        alert("ตั้ง/ยกเลิกสินค้าล้มเหลว");
+    }
+}
+
+// ลบสินค้า
+async function deleteProduct(product_id) {
+    if (!confirm("คุณต้องการลบสินค้านี้หรือไม่?")) return;
+    try {
+        await fetch(`${BASE_URL}/stock/${product_id}`, { method: "DELETE" });
+        loadProducts();
+    } catch (err) {
+        console.error(err);
+        alert("ลบสินค้าล้มเหลว");
+    }
+}
+
+// โหลดสินค้าเมื่อเริ่ม
+loadProducts();
+</script>
+
+</body>
+</html>

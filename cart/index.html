@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ตะกร้าสินค้า</title>
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+}
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background-color: #f0f0f0;
+}
+td img {
+    width: 60px;
+    border-radius: 5px;
+}
+button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.remove-btn { background: #ff4d4f; color: #fff; }
+.clear-btn { background: #1890ff; color: #fff; margin-right: 10px; }
+.checkout-btn { background: #52c41a; color: #fff; }
+.total {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+@media (max-width: 600px) {
+    table, th, td {
+        font-size: 14px;
+    }
+    td img { width: 40px; }
+    button { font-size: 12px; padding: 4px 6px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>ตะกร้าสินค้า</h1>
+    <table id="cart-table">
+        <thead>
+            <tr>
+                <th>รูป</th>
+                <th>ชื่อสินค้า</th>
+                <th>ราคา/หน่วย</th>
+                <th>จำนวน</th>
+                <th>รวม</th>
+                <th>จัดการ</th>
+            </tr>
+        </thead>
+        <tbody id="cart-list">
+            <!-- รายการสินค้า dynamic -->
+        </tbody>
+    </table>
+    <p class="total" id="total">รวมทั้งหมด: 0฿</p>
+    <div style="text-align:right; margin-top:10px;">
+        <button class="clear-btn" id="clear-cart">ล้างตะกร้า</button>
+        <button class="checkout-btn" id="checkout">ชำระเงิน</button>
+    </div>
+</div>
+
+
+
+<script src="/cart/app.js">
+
+</script>
+
+</body>
+</html>
