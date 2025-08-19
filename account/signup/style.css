@@ -12,7 +12,11 @@
     *,
     *::before,
     *::after {
-      box-sizing: border-box;
+       box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+
     }
 
     body {
@@ -37,20 +41,30 @@
     }
 
     .logo {
-      font-size: 48px;
-      font-weight: 700;
-      background: var(--color-black);
-      color: var(--color-white);
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      user-select: text;
-    }
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-black), #333);
+  color: var(--color-white);
+  width: 64px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
+
+    .logo:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+.highlight-k {
+  color: red; 
+}
     h2 {
       text-align: center;
       font-weight: 600;
@@ -71,7 +85,7 @@
       margin-bottom: 20px;
     }
 
- 
+
 
     form input[type="email"],
     form input[type="password"],

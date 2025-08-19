@@ -19,29 +19,25 @@ async function login() {
   const employeeInput = document.getElementById("username");
   const passwordInput = document.getElementById("password");
 
-  const employee_id = employeeInput.value.trim("username");
-  const password = passwordInput.value.trim("password");
+  const email = employeeInput.value.trim();
+  const password = passwordInput.value.trim();
 
-  // ✅ รีเซต error
   employeeInput.classList.remove("input-error");
   passwordInput.classList.remove("input-error");
   document.getElementById("emailError").style.display = "none";
   document.getElementById("passwordError").style.display = "none";
 
   let isValid = true;
-
-  if (!employee_id) {
+  if (!email) {
     employeeInput.classList.add("input-error");
     document.getElementById("emailError").style.display = "block";
     isValid = false;
   }
-
   if (!password) {
     passwordInput.classList.add("input-error");
     document.getElementById("passwordError").style.display = "block";
     isValid = false;
   }
-
   if (!isValid) {
     Swal.fire({
       icon: 'warning',
@@ -51,21 +47,20 @@ async function login() {
     return;
   }
 
-  // ✅ ป้องกันกดซ้ำ
   loginBtn.disabled = true;
 
   try {
     const BASE_URL = ENV.api;
-    const res = await fetch(BASE_URL + "Login", {
+    const res = await fetch(BASE_URL + "/LoginCustomer", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ employee_id, password })
+      body: JSON.stringify({ email, password })
     });
 
     const data = await res.json();
 
     if (res.ok) {
-      localStorage.setItem("employee_id", employee_id);
+      localStorage.setItem("customer_id", data.customer.customer_id);
       localStorage.setItem("token", data.token);
       Swal.fire({
         icon: 'success',

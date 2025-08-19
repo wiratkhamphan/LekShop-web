@@ -12,16 +12,23 @@
 <body>
   <main class="container" role="main" aria-label="Sign up form container">
     <div class="form-box">
-      <div class="logo" aria-label="eK logo">eK</div>
-      <h2>Welcome</h2>
-      <p class="description">Sign Up to eK Sports Fashion Thailand to continue to eK Sports.</p>
+      <div class="logo" aria-label="SneakerHub">
+        Le<span class="highlight-k">K</span>
+      </div>
 
-      <form id="signupForm" novalidate>
+      <h2>Welcome</h2>
+      <p class="description">Sign Up to SneakerHub
+        Sports Fashion Thailand to continue to SneakerHub
+        Sports.</p>
+
+      <form id="signupForm" novalidate onsubmit="return false">
+        <label for="email">Email address*</label>
         <input type="email" id="email" placeholder="Email address*" required aria-required="true" />
 
+        <label for="password">Password*</label>
         <div class="password-box">
           <input type="password" id="password" placeholder="Password*" required autocomplete="new-password" />
-          <span class="toggle-password" title="Show password">👁️</span>
+          <span class="toggle-password" id="togglePassword" title="Show password">👁️</span>
         </div>
 
         <div id="passwordRules" class="password-rules">
@@ -36,16 +43,21 @@
           </ul>
         </div>
 
+        <label for="firstName">First Name*</label>
         <input type="text" id="firstName" placeholder="First Name" required />
+
+        <label for="lastName">Last Name*</label>
         <input type="text" id="lastName" placeholder="Last Name" required />
-        <input type="tel" id="phone" placeholder="Phone Number" required />
+
+        <label for="phone">Phone Number*</label>
+        <input type="tel" id="phone" placeholder="Phone Number" required pattern="[0-9]{10}" />
 
         <div class="checkbox">
           <input type="checkbox" id="agree" required />
           <label for="agree">I agree with the <a href="#">Terms of Service</a></label>
         </div>
 
-        <button type="button" class="btn" id="loginBtn" onclick="login()">Continue</button>
+        <button type="button" class="btn" id="signupBtn">Continue</button>
       </form>
 
       <div class="Login-text">
@@ -55,12 +67,15 @@
       <div>
         <p class="description">- OR - </p>
       </div>
-      <button type="button" class="btn" id="loginBtn" onclick="goToHome()">Back to eK Sports </button>
+      <button type="button" class="btn" id="backBtn">Back to eK Sports</button>
 
     </div>
-
   </main>
-  <script src="/account/signup/js/script.js"></script>
+
+<script src="/account/env/env.js"></script>
+<script src="/account/signup/js/api.js"></script>
+<script src="/account/signup/js/script.js"></script>
+
 </body>
 
 </html>
