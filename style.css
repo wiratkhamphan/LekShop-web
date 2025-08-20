@@ -40,9 +40,13 @@ body {
     color: #ff4c4c;
 }
 
+.logo a {
+    text-decoration: none;
+}
+
 .logo-img {
-  display: none;   
-  width: 40px;     
+  display: none;
+  width: 40px;
   height: auto;
 }
 
