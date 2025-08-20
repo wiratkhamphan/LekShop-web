@@ -1,11 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CART หลังบ้าน</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รับออเดอร์</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f0f0f0; }
+    #clear-orders { margin-top: 15px; }
+  </style>
 </head>
 <body>
-    
+  <h1>รายการสั่งซื้อ</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>สินค้า</th>
+        <th>ชำระเงิน</th>
+        <th>เวลา</th>
+      </tr>
+    </thead>
+    <tbody id="orders-body"></tbody>
+  </table>
+  <button id="clear-orders">ลบทั้งหมด</button>
+
+  <script>
+    const PAYMENT_LABELS = { transfer: "โอนเงิน", cod: "เก็บเงินปลายทาง" };
+    function loadOrders() {
+      try {
+        return JSON.parse(localStorage.getItem("orders")) || [];
+      } catch {
+        return [];
+      }
+    }
+    const orders = loadOrders();
+    const body = document.getElementById("orders-body");
+    if (orders.length === 0) {
+      body.innerHTML = "<tr><td colspan='4'>ไม่มีออเดอร์</td></tr>";
+    } else {
+      orders.forEach((o, idx) => {
+        const items = o.items.map(i => `${i.name}${i.variant ? ` (${i.variant})` : ""} x ${i.quantity}`).join(", ");
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${idx + 1}</td><td>${items}</td><td>${PAYMENT_LABELS[o.payment] || o.payment}</td><td>${new Date(o.createdAt).toLocaleString()}</td>`;
+        body.appendChild(tr);
+      });
+    }
+    document.getElementById("clear-orders").addEventListener("click", () => {
+      localStorage.removeItem("orders");
+      location.reload();
+    });
+  </script>
 </body>
 </html>
