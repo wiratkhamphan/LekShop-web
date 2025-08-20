@@ -30,6 +30,7 @@ body {
     font-size: 28px;
     font-weight: bold;
     flex-shrink: 0;
+    
 }
 
 .logo span {
@@ -86,6 +87,7 @@ body {
     align-items: center;
     gap: 15px;
     flex-shrink: 0;
+    
 }
 
 .search-box {
