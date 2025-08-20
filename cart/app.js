@@ -49,7 +49,14 @@ clearBtn.addEventListener("click", () => {
 });
 
 // ชำระเงิน
-checkoutBtn.addEventListener("click", () => {
+checkoutBtn.addEventListener("click", () => {   
+
+    const jwtToken = localStorage.getItem("token")
+    if (!jwtToken){
+        window.location.href = "/account/login/"
+        return;
+    }
+
     if(cart.length === 0){
         alert("ตะกร้าว่าง ไม่มีสินค้าชำระเงิน");
         return;
