@@ -2,6 +2,8 @@
 const CURRENCY = "฿";
 const IMG_FALLBACK = "/img/products/box.png";
 const CART_KEY = "cart";
+const ORDERS_KEY = "orders";
+const PAYMENT_LABELS = { transfer: "โอนเงิน", cod: "เก็บเงินปลายทาง" };
 
 const fmt = (n) => `${CURRENCY}${Number(n || 0).toLocaleString()}`;
 
@@ -155,15 +157,16 @@ checkoutBtn?.addEventListener("click", () => {
     return;
   }
 
-  // ตัวอย่าง summary + พร้อมส่งไป backend ได้
+  const payment = document.querySelector('input[name="payment"]:checked')?.value || "transfer";
+
   const summary = cart.map(i => `${i.name}${i.variant ? ` (${i.variant})` : ""} x ${i.quantity}`).join("\n");
   const total = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
 
-  alert(`คุณสั่งสินค้า:\n${summary}\nรวมทั้งหมด: ${fmt(total)}`);
+  const orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]");
+  orders.push({ items: cart, payment, createdAt: new Date().toISOString() });
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
 
-  // TODO: เรียก API สร้างออเดอร์ -> ส่ง cart ไป backend
-  // fetch(`${API_BASE}/orders`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${jwtToken}`}, body: JSON.stringify({items: cart}) })
-
+  alert(`คุณสั่งสินค้า:\n${summary}\nรวมทั้งหมด: ${fmt(total)}\nชำระด้วย: ${PAYMENT_LABELS[payment]}`);
   cart = [];
   localStorage.removeItem(CART_KEY);
   renderCart();
