@@ -32,6 +32,9 @@ body {
     flex-shrink: 0;
     
 }
+.logo a {
+    text-decoration: none;
+}
 
 .logo span {
     color: #ff4c4c;
