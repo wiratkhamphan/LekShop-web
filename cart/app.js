@@ -1,8 +1,10 @@
 // ===== Config =====
 const API_BASE = ENV.api; // from /account/env/env.js
 const CART_KEY = "cart";
-const FALLBACK_IMG = "/img/products/box.png";
-const THB = (n) => `฿${Number(n || 0).toLocaleString()}`;
+const ORDERS_KEY = "orders";
+const PAYMENT_LABELS = { transfer: "โอนเงิน", cod: "เก็บเงินปลายทาง" };
+
+const fmt = (n) => `${CURRENCY}${Number(n || 0).toLocaleString()}`;
 
 // ===== State & DOM =====
 let cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
@@ -139,55 +141,12 @@ function setQty(index, qty){
   if (it.quantity <= 0) cart.splice(index,1);
   saveCart();
   renderCart();
-}
-function removeAt(index){ cart.splice(index,1); saveCart(); renderCart(); }
-
-// ===== Public API for other pages (normalize id ทันที) =====
-window.addToCart = function(item){
-  const id = item.id ?? item.product_id;      // ✅ normalize
-  if (!id) { alert("สินค้าไม่มี product_id"); return; }
-
-  const normalized = {
-    id,
-    name: item.name || "-",
-    price: Number(item.price || 0),
-    quantity: clampQty(Number(item.quantity || 1), item.stock),
-    image: item.image || FALLBACK_IMG,
-    variant: item.variant || '',
-    stock: item.stock
-  };
-
-  const key = `${normalized.id}||${normalized.variant.trim().toLowerCase()}`;
-  const idx = cart.findIndex(x => `${x.id}||${(x.variant||"").trim().toLowerCase()}` === key);
-  if (idx > -1) {
-    cart[idx].quantity = clampQty((cart[idx].quantity||0) + normalized.quantity, cart[idx].stock);
-  } else {
-    cart.push(normalized);
-  }
-  saveCart(); renderCart();
-};
-
-// ===== Checkout =====
-els.clear?.addEventListener('click', ()=>{
-  cart = []; localStorage.removeItem(CART_KEY); renderCart();
 });
 
-els.checkout?.addEventListener('click', async ()=>{
-  const token = localStorage.getItem('token');
-  if (!token) { window.location.href = '/account/login/'; return; }
-  if (cart.length === 0) { alert('ตะกร้าว่าง'); return; }
-
-  // ✅ payload แบบกันพลาด
-  const items = cart
-    .map(i => ({
-      product_id: i.id ?? i.product_id,
-      quantity: Number(i.quantity || 0),
-      variant: (i.variant || "")
-    }))
-    .filter(it => it.product_id && it.quantity > 0);
-
-  if (items.length === 0) {
-    alert("ตะกร้าไม่มีสินค้าที่ถูกต้อง (product_id หรือ quantity ผิด)");
+checkoutBtn?.addEventListener("click", () => {
+  const jwtToken = localStorage.getItem("token");
+  if (!jwtToken) {
+    window.location.href = "/account/login/";
     return;
   }
 
@@ -217,21 +176,19 @@ els.checkout?.addEventListener('click', async ()=>{
       return;
     }
 
-    if (data.next_action?.type === 'SHOW_PROMPTPAY' && data.next_action.qr_image_url) {
-      window.open(data.next_action.qr_image_url, '_blank');
-    } else if (data.next_action?.type === 'REDIRECT_GATEWAY' && data.next_action.url) {
-      window.location.href = data.next_action.url;
-      return;
-    }
+  const payment = document.querySelector('input[name="payment"]:checked')?.value || "transfer";
 
-    localStorage.removeItem(CART_KEY);
-    cart = []; renderCart();
-    window.location.href = `/orders/${data.order_id}`;
-  } catch (e) {
-    console.error(e); alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
-  } finally {
-    els.checkout.disabled = false;
-  }
+  const summary = cart.map(i => `${i.name}${i.variant ? ` (${i.variant})` : ""} x ${i.quantity}`).join("\n");
+  const total = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+
+  const orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]");
+  orders.push({ items: cart, payment, createdAt: new Date().toISOString() });
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+
+  alert(`คุณสั่งสินค้า:\n${summary}\nรวมทั้งหมด: ${fmt(total)}\nชำระด้วย: ${PAYMENT_LABELS[payment]}`);
+  cart = [];
+  localStorage.removeItem(CART_KEY);
+  renderCart();
 });
 
 // ===== Init =====

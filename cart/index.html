@@ -10,30 +10,25 @@
   <link rel="stylesheet" href="/cart/style.css" />
 </head>
 <body>
-  <main class="container">
-    <h1 class="page-title">ตะกร้าสินค้า</h1>
-
-    <!-- Cart Table -->
-    <div class="card">
-      <div class="table-wrap">
-        <table class="cart-table" aria-describedby="ตารางตะกร้าสินค้า">
-          <thead>
-            <tr>
-              <th>สินค้า</th>
-              <th>ราคา/หน่วย</th>
-              <th>จำนวน</th>
-              <th>รวม</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="cart-list"></tbody>
-        </table>
-      </div>
-      <div id="cart-empty" class="empty-state" hidden>
-        <img src="/img/illustrations/empty-cart.svg" alt="ตะกร้าว่าง" />
-        <p>ตะกร้าของคุณยังว่างอยู่</p>
-        <a href="/" class="btn btn-primary">เริ่มช้อปเลย</a>
-      </div>
+  <div class="container">
+    <h1>ตะกร้าสินค้า</h1>
+    <table id="cart-table">
+      <thead>
+        <tr>
+          <th>รูป</th>
+          <th>ชื่อสินค้า</th>
+          <th>ราคา/หน่วย</th>
+          <th>จำนวน</th>
+          <th>รวม</th>
+          <th>จัดการ</th>
+        </tr>
+      </thead>
+      <tbody id="cart-list"></tbody>
+    </table>
+    <div id="payment-methods" style="margin-top:20px;">
+      <strong>วิธีชำระเงิน:</strong>
+      <label style="margin-left:10px;"><input type="radio" name="payment" value="transfer" checked> โอนเงิน</label>
+      <label style="margin-left:10px;"><input type="radio" name="payment" value="cod"> เก็บเงินปลายทาง</label>
     </div>
 
     <!-- Actions / Summary -->
