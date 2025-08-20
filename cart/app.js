@@ -2,8 +2,6 @@
 const CURRENCY = "฿";
 const IMG_FALLBACK = "/img/products/box.png";
 const CART_KEY = "cart";
-const ORDERS_KEY = "orders";
-const PAYMENT_LABELS = { transfer: "โอนเงิน", cod: "เก็บเงินปลายทาง" };
 
 const fmt = (n) => `${CURRENCY}${Number(n || 0).toLocaleString()}`;
 
@@ -145,7 +143,7 @@ clearBtn?.addEventListener("click", () => {
   renderCart();
 });
 
-checkoutBtn?.addEventListener("click", () => {
+checkoutBtn?.addEventListener("click", async () => {
   const jwtToken = localStorage.getItem("token");
   if (!jwtToken) {
     window.location.href = "/account/login/";
@@ -157,19 +155,42 @@ checkoutBtn?.addEventListener("click", () => {
     return;
   }
 
-  const payment = document.querySelector('input[name="payment"]:checked')?.value || "transfer";
+  const payment =
+    document.querySelector('input[name="payment"]:checked')?.value ||
+    "BANK_TRANSFER";
 
-  const summary = cart.map(i => `${i.name}${i.variant ? ` (${i.variant})` : ""} x ${i.quantity}`).join("\n");
-  const total = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+  try {
+    const res = await fetch("/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify({
+        payment_method: payment,
+        items: cart.map((i) => ({
+          product_id: i.id,
+          quantity: i.quantity,
+          variant: i.variant || "",
+        })),
+      }),
+    });
 
-  const orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]");
-  orders.push({ items: cart, payment, createdAt: new Date().toISOString() });
-  localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      alert(err.error || "สร้างคำสั่งซื้อไม่สำเร็จ");
+      return;
+    }
 
-  alert(`คุณสั่งสินค้า:\n${summary}\nรวมทั้งหมด: ${fmt(total)}\nชำระด้วย: ${PAYMENT_LABELS[payment]}`);
-  cart = [];
-  localStorage.removeItem(CART_KEY);
-  renderCart();
+    const data = await res.json();
+    alert(data.message || `สั่งซื้อสำเร็จ เลขที่ออเดอร์: ${data.order_id}`);
+    cart = [];
+    localStorage.removeItem(CART_KEY);
+    renderCart();
+  } catch (e) {
+    console.error(e);
+    alert("เกิดข้อผิดพลาดในการสั่งซื้อ");
+  }
 });
 
 // เริ่มต้น
