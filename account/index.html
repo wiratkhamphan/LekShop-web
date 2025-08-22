@@ -4,25 +4,236 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ร้านรองเท้า Sneaker Hub</title>
+    <title>ข้อมูลลูกค้า | SneakerHub</title>
+
+    <!-- ของเดิมโปรเจกต์ -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="/style.css" />
-     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- เฉพาะหน้านี้ -->
+    <style>
+        :root {
+            --prof-bg: #ffffff;
+            --prof-text: #222;
+            --prof-muted: #666;
+            --prof-border: #e6e6e6;
+            --prof-primary: #007bff;
+            --prof-danger: #e53935;
+            --prof-card: #fafafa;
+            --prof-shadow: 0 6px 24px rgba(0, 0, 0, .06);
+            --prof-radius: 12px;
+        }
+
+        /* ระยะห่างใต้ header เดิมของคุณ */
+        .prof-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 96px 20px 32px;
+        }
+
+        /* การ์ดโปรไฟล์ */
+        .prof-card {
+            background: var(--prof-bg);
+            border: 1px solid var(--prof-border);
+            border-radius: var(--prof-radius);
+            box-shadow: var(--prof-shadow);
+            overflow: clip;
+        }
+
+        /* ส่วนหัวการ์ด */
+        .prof-header {
+            display: grid;
+            grid-template-columns: 72px 1fr auto;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 20px;
+            background: linear-gradient(180deg, #fff, #fafafa);
+            border-bottom: 1px solid var(--prof-border);
+        }
+
+        .prof-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: #f2f6ff;
+            color: var(--prof-primary);
+            border: 1px solid #dce8ff;
+            font-size: 36px;
+        }
+
+        .prof-title h2 {
+            margin: 0 0 2px;
+            color: var(--prof-text);
+            font-size: 1.35rem;
+        }
+
+        .prof-title p {
+            margin: 0;
+            color: var(--prof-muted);
+            font-size: .95rem;
+        }
+
+        .prof-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .prof-btn {
+            border: 1px solid var(--prof-border);
+            background: #f8f8f8;
+            color: var(--prof-text);
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .prof-btn:hover {
+            background: #eee;
+        }
+
+        .prof-btn.primary {
+            background: var(--prof-primary);
+            color: #fff;
+            border-color: var(--prof-primary);
+            font-weight: 600;
+        }
+
+        .prof-btn.danger {
+            background: var(--prof-danger);
+            color: #fff;
+            border-color: var(--prof-danger);
+            font-weight: 600;
+        }
+
+        /* เนื้อหาด้านใน */
+        .prof-body {
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 20px;
+            padding: 18px 20px 20px;
+        }
+
+        @media (max-width: 900px) {
+            .prof-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .prof-panel {
+            background: var(--prof-card);
+            border: 1px solid var(--prof-border);
+            border-radius: var(--prof-radius);
+            padding: 16px;
+        }
+
+        .prof-panel h3 {
+            margin: 0 0 10px;
+            font-size: 1.05rem;
+            color: var(--prof-text);
+        }
+
+        .prof-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .prof-item {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .prof-item .label {
+            color: var(--prof-muted);
+        }
+
+        .prof-item .value {
+            color: var(--prof-text);
+        }
+
+        @media (max-width: 560px) {
+            .prof-item {
+                grid-template-columns: 1fr;
+            }
+
+            .prof-item .label {
+                font-size: .9rem;
+            }
+        }
+
+        /* ป้ายสถานะ */
+        .prof-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .prof-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eef6ff;
+            color: #0b57d0;
+            border: 1px solid #d9e9ff;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: .85rem;
+        }
+
+        /* ปุ่มออกจากระบบ (สำรอง ถ้าใช้ account.js แล้วมีฟังก์ชัน logout อยู่แล้ว ให้ลิงก์ปุ่มนี้ไปเรียกได้เลย) */
+        .prof-logout {
+            width: 100%;
+            margin-top: 12px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* กล่องเสริมด้านขวา (เช่น เปลี่ยนรหัสผ่าน / ที่อยู่จัดส่งในอนาคต) */
+        .prof-subpanel {
+            display: grid;
+            gap: 12px;
+        }
+
+        .prof-note {
+            background: #fff;
+            border: 1px dashed var(--prof-border);
+            border-radius: 10px;
+            padding: 12px;
+            color: #444;
+            font-size: .95rem;
+        }
+
+        /* เงาโฟกัสเมื่อกดปุ่มด้วยคีย์บอร์ด */
+        .prof-btn:focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, .2);
+        }
+    </style>
 </head>
 
 <body>
+
     <!-- Header -->
     <header class="header">
-        <div class="logo"><span class="logo-text" style="color: aliceblue; ">Sneaker<span>Hub</span></span>
+        <div class="logo">
+            <span class="logo-text" style="color: aliceblue;">Sneaker<span>Hub</span></span>
             <img src="/img/logo/Line.png" alt="SneakerHub" class="logo-img" />
         </div>
         <nav class="nav">
             <a href="/">หน้าแรก</a>
             <a href="/products/">สินค้า</a>
-            <a href="#">โปรโมชั่น</a>
-            <a href="#">ติดต่อเรา</a>
+            <a href="/promotions/">โปรโมชั่น</a>
+            <a href="/contact/">ติดต่อเรา</a>
         </nav>
-
         <div class="header-right">
             <div class="search-box">
                 <input type="text" placeholder="ค้นหา...">
@@ -33,39 +244,234 @@
             </a>
             <a href="/account/"><i class="fas fa-user"></i></a>
         </div>
-
-        <div class="hamburger">
-            <i class="fas fa-bars"></i>
-        </div>
-
+        <div class="hamburger"><i class="fas fa-bars"></i></div>
     </header>
-    <div class="profile-card">
-        <div class="profile-header">
-            <i class="fas fa-user-circle"></i>
-            <h2>ข้อมูลลูกค้า</h2>
-        </div>
-        <!-- HTML -->
-        <div class="profile-info">
-            <p><i class="fas fa-id-card"></i> <strong>ชื่อ:</strong> <span id="customerName">-</span></p>
-            <p><i class="fas fa-envelope"></i> <strong>อีเมล:</strong> <span id="customerEmail">-</span></p>
-            <p><i class="fas fa-phone"></i> <strong>เบอร์โทร:</strong> <span id="customerPhone">-</span></p>
-            <p><i class="fas fa-calendar-alt"></i> <strong>วันที่สมัคร:</strong> <span id="customerJoin">-</span></p>
-        </div>
-        <button class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
-        </button>
 
-    </div>
+    <!-- Main -->
+    <main class="prof-page">
+        <div class="prof-card">
+            <!-- Header ของการ์ด -->
+            <div class="prof-header">
+                <div class="prof-avatar" aria-hidden="true">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="prof-title">
+                    <h2>ข้อมูลลูกค้า</h2>
+                    <p>จัดการข้อมูลบัญชีและประวัติของคุณ</p>
+                    <div class="prof-badges">
+                        <span class="prof-badge"><i class="fa-solid fa-check-circle"></i> Verified</span>
+                        <span class="prof-badge" style="background:#eefaf1;color:#1b7b36;border-color:#cfeeda;">
+                            <i class="fa-solid fa-shield-halved"></i> Secure Account
+                        </span>
+                    </div>
+                </div>
+                <div class="prof-actions">
+                    <a href="/products/" class="prof-btn">ไปช้อปต่อ</a>
 
+                    </button>
+                </div>
+            </div>
+
+            <!-- เนื้อหา -->
+            <div class="prof-body">
+                <!-- ซ้าย: ข้อมูลหลัก -->
+                <section class="prof-panel" aria-labelledby="info-title">
+                    <h3 id="info-title">ข้อมูลบัญชี</h3>
+                    <div class="prof-list">
+                        <div class="prof-body">
+                            <!-- ซ้าย: ข้อมูลหลัก -->
+                            <section class="prof-panel" aria-labelledby="info-title">
+                                <h3 id="info-title">ข้อมูลส่วนบุคคล</h3>
+                                <div class="prof-list">
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-id-card"></i> รหัสลูกค้า</div>
+                                        <div class="value" id="customerCode">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-user"></i> ชื่อ–นามสกุล</div>
+                                        <div class="value" id="customerName">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-venus-mars"></i> เพศ</div>
+                                        <div class="value" id="customerGender">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-cake-candles"></i> วันเกิด</div>
+                                        <div class="value" id="customerDOB">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-calendar-check"></i> วันที่สมัคร</div>
+                                        <div class="value" id="customerJoin">-</div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- ขวา: การติดต่อ -->
+                            <section class="prof-panel" aria-labelledby="contact-title">
+                                <h3 id="contact-title">การติดต่อ</h3>
+                                <div class="prof-list">
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-envelope"></i> อีเมล</div>
+                                        <div class="value" id="customerEmail">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-phone"></i> เบอร์โทร</div>
+                                        <div class="value" id="customerPhone">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fa-brands fa-line"></i> LINE</div>
+                                        <div class="value" id="customerLine">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fa-brands fa-facebook"></i> Facebook</div>
+                                        <div class="value" id="customerFacebook">-</div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- ซ้ายล่าง: ที่อยู่ -->
+                            <section class="prof-panel" aria-labelledby="addr-title">
+                                <h3 id="addr-title">ที่อยู่</h3>
+                                <div class="prof-list">
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-truck"></i> ที่อยู่จัดส่ง (ค่าเริ่มต้น)
+                                        </div>
+                                        <div class="value" id="shippingAddress">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-file-invoice"></i> ที่อยู่สำหรับออกใบเสร็จ
+                                        </div>
+                                        <div class="value" id="billingAddress">-</div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- ขวาล่าง: สมาชิก/แต้ม -->
+                            <section class="prof-panel" aria-labelledby="member-title">
+                                <h3 id="member-title">สมาชิก & คะแนนสะสม</h3>
+                                <div class="prof-list">
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-crown"></i> ระดับสมาชิก</div>
+                                        <div class="value" id="loyaltyTier">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-star"></i> คะแนนสะสม</div>
+                                        <div class="value" id="loyaltyPoints">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-ticket-alt"></i> คูปองที่มี</div>
+                                        <div class="value" id="couponCount">-</div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- ซ้ายล่างสุด: ความชอบรองเท้า -->
+                            <section class="prof-panel" aria-labelledby="pref-title">
+                                <h3 id="pref-title">ความชอบรองเท้า</h3>
+                                <div class="prof-list">
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-shoe-prints"></i> ไซซ์ที่ใส่บ่อย</div>
+                                        <div class="value" id="preferredSize">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-tags"></i> ประเภทรองเท้าที่ชอบ</div>
+                                        <div class="value" id="preferredTypes">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-palette"></i> สีที่ชอบ</div>
+                                        <div class="value" id="preferredColors">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-money-bill-wave"></i> งบประมาณต่อคู่</div>
+                                        <div class="value" id="budgetRange">-</div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- ขวาล่างสุด: สถิติคำสั่งซื้อ -->
+                            <section class="prof-panel" aria-labelledby="stat-title">
+                                <h3 id="stat-title">สถิติคำสั่งซื้อ</h3>
+                                <div class="prof-list">
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-receipt"></i> จำนวนคำสั่งซื้อ</div>
+                                        <div class="value" id="orderCount">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-wallet"></i> ยอดใช้จ่ายรวม</div>
+                                        <div class="value" id="totalSpent">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-calendar-day"></i> สั่งซื้อล่าสุด</div>
+                                        <div class="value" id="lastOrderAt">-</div>
+                                    </div>
+                                    <div class="prof-item">
+                                        <div class="label"><i class="fas fa-check-circle"></i> อัตราสำเร็จ/ยกเลิก</div>
+                                        <div class="value" id="orderRate">-</div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                    </div>
+
+                    <!-- ปุ่มออกจากระบบ (สำรอง) -->
+                    <button class="prof-btn danger prof-logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+                    </button>
+                </section>
+
+                <!-- ขวา: พื้นที่เสริม (เผื่อฟีเจอร์อนาคต) -->
+                <aside class="prof-subpanel">
+                    <div class="prof-panel">
+                        <h3>ศูนย์บัญชี</h3>
+                        <div class="prof-note">
+                            คุณสามารถอัปเดตข้อมูลติดต่อ เปลี่ยนรหัสผ่าน หรือตั้งค่าการแจ้งเตือนได้จากหน้านี้ในอนาคต
+                        </div>
+                        <div style="display:flex; gap:10px; flex-wrap: wrap; margin-top:8px;">
+                            <a class="prof-btn" href="/account/profile-edit/"><i
+                                    class="fa-regular fa-pen-to-square"></i> แก้ไขโปรไฟล์</a>
+                            <a class="prof-btn" href="/account/security/"><i class="fa-solid fa-lock"></i>
+                                ความปลอดภัย</a>
+                            <a class="prof-btn" href="/orders/"><i class="fa-solid fa-box"></i> คำสั่งซื้อของฉัน</a>
+                        </div>
+                    </div>
+                    <div class="prof-panel">
+                        <h3>ช่วยเหลือ</h3>
+                        <div class="prof-note">
+                            หากต้องการความช่วยเหลือ ติดต่อเราได้ที่ <a href="/contact/"
+                                style="color: #e53935; text-decoration: none;">หน้าแจ้งปัญหา</a> หรืออีเมล
+                            support@sneakerhub.example
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
         <p>© 2025 SneakerHub. All rights reserved.</p>
     </footer>
 
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="/account/env/env.js"></script>
-        <script src="/account/account.js"></script>
+    <script src="/account/account.js"></script>
+    <script>
+        // ตัวอย่าง: ถ้า account.js เติมข้อมูลแล้ว ไม่ต้องทำอะไรเพิ่ม
+        // แต่ถ้าอยากใส่ fallback แสดงอักษรย่อใน Avatar:
+        (function () {
+            const nameEl = document.getElementById('customerName');
+            const avatar = document.querySelector('.prof-avatar');
+            const name = (nameEl?.textContent || '').trim();
+            if (name && name !== '-') {
+                const initials = name.split(' ')
+                    .map(w => w[0]?.toUpperCase() || '')
+                    .join('').slice(0, 2);
+                avatar.innerHTML = initials || '<i class="fas fa-user"></i>';
+            }
+        })();
+    </script>
 </body>
 
 </html>

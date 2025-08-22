@@ -7,43 +7,107 @@
     <title>ร้านรองเท้า Sneaker Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="/style.css" />
+<link rel="stylesheet" href="products.css" />
+
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="logo"><span class="logo-text" style="color: aliceblue;">Sneaker<span>Hub</span></span>
-            <img src="/img/logo/Line.png" alt="SneakerHub" class="logo-img" />
-        </div>
-        <nav class="nav">
-            <a href="/">หน้าแรก</a>
-            <a href="/products/">สินค้า</a>
-            <a href="#">โปรโมชั่น</a>
-            <a href="#">ติดต่อเรา</a>
-        </nav>
+  <!-- Header  -->
+  <header class="header">
+    <div class="logo">
+      <a href="/" aria-label="ไปหน้าแรก SneakerHub">
+        <span class="logo-text" style="color:#e6ecf7;">Sneaker<span>Hub</span></span>
+        <img src="/img/logo/Line.png" alt="" class="logo-img"/>
+      </a>
+    </div>
+    <nav class="nav">
+      <a href="/">หน้าแรก</a>
+      <a href="/products/">สินค้า</a>
+      <a href="/promotions/">โปรโมชั่น</a>
+      <a class="active" href="/contact/">ติดต่อเรา</a>
+    </nav>
+    <div class="header-right">
+      <div class="search-box">
+        <input type="text" placeholder="ค้นหา...">
+        <i class="fas fa-search"></i>
+      </div>
+      <a href="/cart/" style="position: relative;">
+        <i class="fas fa-shopping-cart" id="cart-icon" data-count="0"></i>
+      </a>
+      <a href="/account/"><i class="fas fa-user"></i></a>
+    </div>
+    <div class="hamburger"><i class="fas fa-bars"></i></div>
+  </header>
 
-        <div class="header-right">
-            <div class="search-box">
-                <input type="text" placeholder="ค้นหา...">
-                <i class="fas fa-search"></i>
-            </div>
-            <a href="/cart/" style="position: relative;">
-                <i class="fas fa-shopping-cart" id="cart-icon" data-count="0"></i>
-            </a>
-            <a href="/account/"><i class="fas fa-user"></i></a>
-        </div>
 
-        <div class="hamburger">
-            <i class="fas fa-bars"></i>
-        </div>
+<!-- วางแทน section เดิม -->
+<main class="products-page container">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="left">
+      <button id="filter-toggle" class="btn-outline">
+        <i class="fa-solid fa-sliders"></i> ตัวกรอง
+      </button>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="ค้นหาชื่อสินค้า / แบรนด์ / หมวดหมู่…" />
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+    </div>
+    <div class="right">
+      <label class="sort">
+        เรียงโดย
+        <select id="sort">
+          <option value="popularity">ความนิยม</option>
+          <option value="newest">มาใหม่</option>
+          <option value="price_asc">ราคาต่ำ → สูง</option>
+          <option value="price_desc">ราคาสูง → ต่ำ</option>
+        </select>
+      </label>
+    </div>
+  </div>
 
-    </header>
+  <!-- Filters -->
+  <aside id="filters" class="filters">
+    <div class="filter-group">
+      <h4>หมวดหมู่</h4>
+      <div class="chips" id="category-chips">
+        <!-- เติมด้วย JS -->
+      </div>
+    </div>
+    <div class="filter-group">
+      <h4>เพศ</h4>
+      <label><input type="checkbox" name="gender" value="men" /> ผู้ชาย</label>
+      <label><input type="checkbox" name="gender" value="women" /> ผู้หญิง</label>
+      <label><input type="checkbox" name="gender" value="unisex" /> Unisex</label>
+    </div>
+    <div class="filter-group">
+      <h4>ช่วงราคา (฿)</h4>
+      <div class="price-range">
+        <input type="number" id="price-min" placeholder="ต่ำสุด" min="0" />
+        <span>–</span>
+        <input type="number" id="price-max" placeholder="สูงสุด" min="0" />
+      </div>
+      <button id="apply-price" class="btn">ใช้ตัวกรองราคา</button>
+    </div>
+    <button id="clear-filters" class="btn-ghost">ล้างตัวกรองทั้งหมด</button>
+  </aside>
 
-    <section class="products">
-        <h2>สินค้าทั้งหมด</h2>
-        <div class="product-list" id="product-list"></div>
-    </section>
+  <!-- Results header -->
+  <div class="results-head">
+    <h2>สินค้าทั้งหมด</h2>
+    <span id="result-count" class="muted">กำลังโหลด…</span>
+  </div>
 
+  <!-- Product grid -->
+  <section class="grid" id="product-list" aria-live="polite">
+    <!-- เติมด้วย JS -->
+  </section>
+
+  <!-- Load more -->
+  <div class="load-more">
+    <button id="load-more" class="btn">โหลดเพิ่ม</button>
+  </div>
+</main>
     <!-- Footer -->
     <footer class="footer">
         <p>© 2025 SneakerHub. All rights reserved.</p>
