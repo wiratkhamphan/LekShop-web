@@ -1,50 +1,126 @@
-const BASE_URL = ENV.api;
+// account.js — ข้อมูลลูกค้า (เวอร์ชันเสริมรายละเอียด + แข็งแรงขึ้น)
 
-document.addEventListener("DOMContentLoaded", () => {
-  const nameElem = document.getElementById("customerName");
-  const emailElem = document.getElementById("customerEmail");
-  const phoneElem = document.getElementById("customerPhone");
-  const joinElem = document.getElementById("customerJoin");
+// ===== CONFIG =====
+const BASE_URL = (window.ENV && ENV.api) ? ENV.api.replace(/\/+$/, "") : "";
+const API_CUSTOMER = (id) => (BASE_URL ? `${BASE_URL}/customers/${id}` : `/api/customers/${id}`);
 
-  const storedCustomerID = localStorage.getItem("customer_id");
-  const jwtToken = localStorage.getItem("token");
+// ===== HELPERS =====
+const $ = (sel) => document.querySelector(sel);
+const setText = (el, v, fallback = "-") => { if (el) el.textContent = (v ?? "").toString().trim() || fallback; };
+const formatDateTH = (d) => {
+  if (!d) return "-";
+  const dt = new Date(d);
+  return isNaN(dt) ? d : dt.toLocaleDateString("th-TH", { year: "numeric", month: "short", day: "numeric" });
+};
+const THB = (n) => "฿" + Number(n || 0).toLocaleString("th-TH", { maximumFractionDigits: 0 });
 
-  if (!jwtToken || !storedCustomerID) {
-    window.location.href = "/account/login/";
-    return;
-  }
+// ===== ELEMENTS =====
+const els = {
+  // หลักที่คุณมีอยู่แล้ว
+  name: $("#customerName"),
+  email: $("#customerEmail"),
+  phone: $("#customerPhone"),
+  join: $("#customerJoin"),
+  // รายละเอียดที่เพิ่ม
+  code: $("#customerCode"),
+  gender: $("#customerGender"),
+  dob: $("#customerDOB"),
+  line: $("#customerLine"),
+  facebook: $("#customerFacebook"),
+  ship: $("#shippingAddress"),
+  bill: $("#billingAddress"),
+  tier: $("#loyaltyTier"),
+  points: $("#loyaltyPoints"),
+  coupons: $("#couponCount"),
+  size: $("#preferredSize"),
+  types: $("#preferredTypes"),
+  colors: $("#preferredColors"),
+  budget: $("#budgetRange"),
+  orderCount: $("#orderCount"),
+  totalSpent: $("#totalSpent"),
+  lastOrderAt: $("#lastOrderAt"),
+  orderRate: $("#orderRate"),
+};
 
-  fetch(`${BASE_URL}/customers/${storedCustomerID}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${jwtToken}`,
-      "Content-Type": "application/json",
-    },
-  })
-  .then(res => {
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-    return res.json();
-  })
-  .then(data => {
-    const cus = data.customer;
-    console.log("Customer data:", cus); // debug
-
-    nameElem.innerText = `${cus.first_name || ""} ${cus.last_name || ""}`;
-    emailElem.innerText = cus.email || "-";
-    phoneElem.innerText = cus.phone || "-";
-    joinElem.innerText = cus.created_at ? new Date(cus.created_at).toLocaleDateString() : "-";
-  })
-  .catch(err => {
-    console.error("Fetch error:", err);
-    localStorage.removeItem("customer_id");
-    localStorage.removeItem("token");
-    window.location.href = "/account/login/";
-  });
-});
-
-// ฟังก์ชัน logout
 function logout() {
   localStorage.removeItem("customer_id");
   localStorage.removeItem("token");
   window.location.href = "/";
 }
+window.logout = logout; // เผื่อเรียกจาก onclick
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const id = localStorage.getItem("customer_id");
+  const token = localStorage.getItem("token");
+
+  // ถ้าต้องการบังคับล็อกอิน ให้ uncomment 2 บรรทัดถัดไป
+  // if (!id || !token) { window.location.href = "/account/login/"; return; }
+
+  // โชว์สถานะกำลังโหลดคร่าว ๆ
+  Object.values(els).forEach((el) => el && (el.textContent = "กำลังโหลด…"));
+
+  try {
+    const res = await fetch(API_CUSTOMER(id), {
+      method: "GET",
+      headers: { Authorization: token ? `Bearer ${token}` : "" },
+      credentials: "include",
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      // logout(); return; // เปิดใช้ถ้าต้อง redirect
+    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const body = await res.json();
+    const cus = body.customer || body; // รองรับทั้ง data.customer หรือ body ตรง ๆ
+
+    // พื้นฐาน
+    const fullName = `${cus.first_name || ""} ${cus.last_name || ""}`.trim();
+    setText(els.name, fullName);
+    setText(els.email, cus.email);
+    setText(els.phone, cus.phone);
+    setText(els.join, formatDateTH(cus.created_at || cus.joined_at));
+    setText(els.code, cus.customer_code);
+
+    // ส่วนบุคคล/การติดต่อ
+    setText(els.gender, cus.gender);
+    setText(els.dob, formatDateTH(cus.dob));
+    setText(els.line, cus.line_id);
+    setText(els.facebook, cus.facebook);
+
+    // ที่อยู่
+    setText(els.ship, cus.shipping_address);
+    setText(els.bill, cus.billing_address);
+
+    // สมาชิก/แต้ม
+    setText(els.tier, cus.loyalty_tier);
+    setText(els.points, cus.loyalty_points);
+    setText(els.coupons, cus.coupon_count);
+
+    // ความชอบ
+    const prefTypes = Array.isArray(cus.pref_types) ? cus.pref_types.join(", ") : cus.pref_types;
+    const prefColors = Array.isArray(cus.pref_colors) ? cus.pref_colors.join(", ") : cus.pref_colors;
+    setText(els.size, cus.pref_size);
+    setText(els.types, prefTypes);
+    setText(els.colors, prefColors);
+    setText(els.budget, cus.pref_budget_range);
+
+    // สถิติคำสั่งซื้อ
+    setText(els.orderCount, cus.order_count);
+    setText(els.totalSpent, THB(cus.total_spent));
+    setText(els.lastOrderAt, formatDateTH(cus.last_order_at));
+    const s = Number(cus.order_success || 0), cxl = Number(cus.order_cancel || 0), total = s + cxl;
+    setText(els.orderRate, total ? `${Math.round((s / total) * 100)}% สำเร็จ (${s}/${total})` : "-");
+
+    // อัปเดต Avatar เป็นอักษรย่อ (ถ้ามี)
+    const avatar = document.querySelector(".prof-avatar");
+    if (avatar && fullName) {
+      const initials = fullName.split(" ").map(w => w[0]?.toUpperCase() || "").join("").slice(0,2);
+      if (initials) avatar.textContent = initials;
+    }
+  } catch (err) {
+    console.error("Fetch customer error:", err);
+    // เปิดใช้ถ้าต้องการเคลียร์ session แล้วเด้งออก
+    // logout();
+  }
+});

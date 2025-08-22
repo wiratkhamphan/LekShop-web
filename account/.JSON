@@ -1,0 +1,32 @@
+{
+  "customer_code": "CUS-000123",
+  "first_name": "สมชาย",
+  "last_name": "ใจดี",
+  "full_name": "สมชาย ใจดี",
+  "gender": "ชาย",
+  "dob": "1995-05-10",
+  "joined_at": "2024-11-15T10:05:00+07:00",
+
+  "email": "somchai@example.com",
+  "phone": "0812345678",
+  "line_id": "somchai.line",
+  "facebook": "facebook.com/somchai",
+
+  "shipping_address": "99/1 ถ.สาทร แขวงยานนาวา เขตสาทร กทม. 10120",
+  "billing_address": "บริษัท ABC 123/4 ถ.พระราม 3 กทม. 10120",
+
+  "loyalty_tier": "Gold",
+  "loyalty_points": 1280,
+  "coupon_count": 3,
+
+  "pref_size": "EU 42 / 27.0 cm",
+  "pref_types": ["Running", "Lifestyle"],
+  "pref_colors": ["Black", "White"],
+  "pref_budget_range": "฿2,000–฿3,500",
+
+  "order_count": 12,
+  "total_spent": 18490,
+  "last_order_at": "2025-08-10T14:20:00+07:00",
+  "order_success": 11,
+  "order_cancel": 1
+}

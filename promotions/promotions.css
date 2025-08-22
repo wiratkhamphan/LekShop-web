@@ -1,0 +1,159 @@
+/* ====== SneakerHub Promotions — Corporate White Theme ====== */
+:root{
+  --header-h: 72px;
+  --c-bg: #ffffff;
+  --c-card: #ffffff;
+  --c-text: #111111;
+  --c-muted: #6b7280;
+  --c-line: #e5e7eb;
+  --c-accent: #1d4ed8;   /* น้ำเงินสุภาพ */
+  --c-hot: #d32f2f;      /* แดงเข้ม */
+  --radius: 14px;
+  --shadow-1: 0 4px 10px rgba(0,0,0,.04);
+  --shadow-2: 0 6px 18px rgba(0,0,0,.08);
+}
+
+body{
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: 'Prompt', sans-serif;
+}
+
+/* Container */
+.promo-container{
+  max-width: 1180px;
+  margin: calc(var(--header-h) + 24px) auto 48px;
+  padding: 0 18px;
+}
+
+/* Hero */
+.promo-hero{
+  text-align:center;
+  padding: 28px 12px 8px;
+}
+.promo-hero h1{
+  font-size: clamp(26px, 3vw, 36px);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.promo-hero p{ color: var(--c-muted); }
+
+/* Controls */
+.promo-controls{
+  background: #fff;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-top: 16px;
+  box-shadow: var(--shadow-1);
+  display: grid;
+  gap: 12px;
+}
+@media (min-width: 768px){
+  .promo-controls{ grid-template-columns: 1fr auto; align-items: end; }
+}
+.filters,
+.sort-and-search{ display: grid; gap: 10px; }
+@media (min-width: 768px){
+  .filters{ grid-template-columns: repeat(4,1fr); }
+  .sort-and-search{ grid-template-columns: 1fr 180px; }
+}
+.filters select,
+.sort-and-search select,
+.sort-and-search input[type="search"]{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid var(--c-line);
+  border-radius:10px;
+  background:#fff;
+}
+
+/* Grid */
+.promo-grid{
+  margin-top:18px;
+  display:grid;
+  gap:16px;
+  grid-template-columns:repeat(2,1fr);
+}
+@media (min-width:640px){ .promo-grid{ grid-template-columns:repeat(3,1fr);} }
+@media (min-width:1024px){ .promo-grid{ grid-template-columns:repeat(4,1fr);} }
+
+/* Card */
+.promo-card{
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  box-shadow: var(--shadow-1);
+  transition: transform .18s, box-shadow .18s;
+}
+.promo-card:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+}
+.promo-img{
+  aspect-ratio: 1/1;
+  width:100%; object-fit:cover;
+}
+
+/* Badges */
+.promo-badges{ position:absolute; top:10px; left:10px; display:flex; gap:6px; }
+.badge{
+  font-size:12px;
+  padding:4px 8px;
+  border-radius:999px;
+  color:#fff;
+}
+.badge-discount{ background: var(--c-hot); }
+.badge-tag{ background: var(--c-accent); }
+
+/* Body */
+.promo-body{ padding:12px; }
+.promo-title{ font-weight:600; margin:0 0 6px; }
+.promo-brand,.promo-category{ font-size:12px; color:var(--c-muted); }
+
+/* Price */
+.promo-price{ display:flex; gap:8px; margin-top:6px; align-items:baseline; }
+.price-now{ font-size:18px; font-weight:700; color: var(--c-hot); }
+.price-old{ font-size:13px; color:#9ca3af; text-decoration: line-through; }
+
+/* Coupon */
+.promo-coupon{
+  margin:8px 12px;
+  padding:8px 12px;
+  border:1px dashed var(--c-line);
+  border-radius:10px;
+  background:#fafafa;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.promo-coupon code{ font-weight:600; letter-spacing:.08em; }
+
+/* Meta */
+.promo-meta{
+  padding:0 12px 12px;
+  font-size:12px;
+  color:var(--c-muted);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.countdown{ font-weight:600; color: var(--c-hot); }
+
+/* Actions */
+.promo-actions{
+  padding:10px 12px 12px;
+  display:flex; gap:8px;
+}
+.btn{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+.btn{ background: var(--c-accent); color:#fff; }
+.btn-outline{ background:#fff; border:1px solid var(--c-line); color:var(--c-text); }
+
+/* Empty state */
+.promo-empty{ text-align:center; color:var(--c-muted); padding:20px; }

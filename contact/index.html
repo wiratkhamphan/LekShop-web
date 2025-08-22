@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ติดต่อเรา | SneakerHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="contact.css" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <!-- Header  -->
+  <header class="header">
+    <div class="logo">
+      <a href="/" aria-label="ไปหน้าแรก SneakerHub">
+        <span class="logo-text" style="color:#e6ecf7;">Sneaker<span>Hub</span></span>
+        <img src="/img/logo/Line.png" alt="" class="logo-img" />
+      </a>
+    </div>
+    <nav class="nav">
+      <a href="/">หน้าแรก</a>
+      <a href="/products/">สินค้า</a>
+      <a href="/promotions/">โปรโมชั่น</a>
+      <a class="active" href="/contact/">ติดต่อเรา</a>
+    </nav>
+    <div class="header-right">
+      <div class="search-box">
+        <input type="text" placeholder="ค้นหา...">
+        <i class="fas fa-search"></i>
+      </div>
+      <a href="/cart/" style="position: relative;">
+        <i class="fas fa-shopping-cart" id="cart-icon" data-count="0"></i>
+      </a>
+      <a href="/account/"><i class="fas fa-user"></i></a>
+    </div>
+    <div class="hamburger"><i class="fas fa-bars"></i></div>
+  </header>
+
+  <!-- Main -->
+  <main class="container page-header" id="contact">
+    <div class="breadcrumb">หน้าแรก / ติดต่อเรา</div>
+    <h1 class="page-title">ติดต่อเรา</h1>
+    <p class="page-sub">สำหรับการติดต่อสอบถามข้อมูลสินค้า การสั่งซื้อ การเปลี่ยน/คืนสินค้า หรือต้องการใบเสนอราคา
+      โปรดกรอกแบบฟอร์มด้านล่าง หรือใช้ข้อมูลการติดต่อทางด้านขวา</p>
+
+    <div class="grid">
+      <!-- ฟอร์ม -->
+      <section class="panel" aria-labelledby="form-title">
+        <h2 id="form-title">แบบฟอร์มติดต่อ</h2>
+        <div class="hr"></div>
+        <form id="contact-form" novalidate>
+          <div class="row">
+            <div>
+              <label for="name">ชื่อ-นามสกุล *</label>
+              <input id="name" name="name" autocomplete="name" required />
+            </div>
+            <div>
+              <label for="phone">โทรศัพท์</label>
+              <input id="phone" name="phone" autocomplete="tel" placeholder="08x-xxx-xxxx" />
+            </div>
+          </div>
+
+          <label for="email">อีเมล *</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+          <div class="help">เราจะใช้เพื่อการติดต่อกลับเท่านั้น</div>
+
+          <label for="topic">หัวข้อเรื่อง</label>
+          <input id="topic" name="topic" placeholder="เช่น สอบถามสต๊อก / ขอใบเสนอราคา" />
+
+          <label for="message">รายละเอียด *</label>
+          <textarea id="message" name="message" required
+            placeholder="โปรดระบุรายละเอียดให้ครบถ้วนเพื่อความรวดเร็วในการให้บริการ"></textarea>
+
+          <div class="actions">
+            <button class="btn primary" id="submitBtn" type="submit">
+              <span class="btn-label">ส่งข้อความ</span>
+              <span class="btn-spinner" aria-hidden="true"></span>
+            </button>
+            <button class="btn" type="reset">ล้างข้อมูล</button>
+          </div>
+
+          <div id="form-ok" class="msg ok">ส่งข้อมูลเรียบร้อย เราจะติดต่อกลับโดยเร็วที่สุด</div>
+          <div id="form-err" class="msg err">กรุณากรอก ชื่อ อีเมล และรายละเอียด ให้ครบถ้วน</div>
+        </form>
+      </section>
+
+      <!-- ข้อมูลติดต่อ -->
+      <aside class="panel" aria-labelledby="info-title">
+        <h2 id="info-title">ข้อมูลติดต่อสาขา</h2>
+        <div class="hr"></div>
+        <div class="info">
+          <div class="info-item"><i class="fa-solid fa-location-dot"></i> 123 ถนนฟ้าใหม่ เขตเมือง กรุงเทพฯ 10110</div>
+          <div class="info-item"><i class="fa-solid fa-phone"></i> 02-123-4567, 08x-xxx-xxxx</div>
+          <div class="info-item"><i class="fa-solid fa-envelope"></i> support@sneakerhub.example</div>
+          <div class="info-item"><i class="fa-solid fa-clock"></i> จันทร์–อาทิตย์ 10:00–20:00 น.</div>
+        </div>
+
+        <div class="map" role="region" aria-label="แผนที่ตั้งร้าน">
+          <!-- เปลี่ยน src ด้านล่างเป็น Google Maps Embed จริงของคุณ -->
+          <iframe loading="lazy" allowfullscreen iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15492.813883459668!2d100.45089630000001!3d13.886778650000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e28549310f1347%3A0xc907438110b6d75d!2zMTAwLzIg4Lia4Liy4LiH4Lij4Lix4LiB4LiZ4LmJ4Lit4LiiIDEvOSDguJXguLPguJrguKUg4Lia4Liy4LiH4Lij4Lix4LiB4LiZ4LmJ4Lit4LiiIOC4reC4s-C5gOC4oOC4reC5gOC4oeC4t-C4reC4h-C4meC4meC4l-C4muC4uOC4o-C4tSDguJnguJnguJfguJrguLjguKPguLUgMTEwMDA!5e0!3m2!1sth!2sth!4v1755843535691!5m2!1sth!2sth"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </iframe>
+        </div>
+
+        <h2 style="margin-top:16px;font-size:1.1rem">เวลาให้บริการ</h2>
+        <div class="hr"></div>
+        <div class="hours">
+          <div>จ.–ศ.: 10:00–20:00</div>
+          <div>ส.–อา.: 10:00–20:00</div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 SneakerHub. All rights reserved.</p>
+  </footer>
+
+
+  <!-- ===== JS ===== -->
+  <script src="/account/env/env.js"></script>
+  <script src="contact.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="cart.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

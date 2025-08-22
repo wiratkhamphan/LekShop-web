@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ติดต่อเรา | SneakerHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="promotions.css"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <style>
+   
+  </style>
+</head>
+<body>
+  <!-- Header  -->
+  <header class="header">
+    <div class="logo">
+      <a href="/" aria-label="ไปหน้าแรก SneakerHub">
+        <span class="logo-text" style="color:#e6ecf7;">Sneaker<span>Hub</span></span>
+        <img src="/img/logo/Line.png" alt="" class="logo-img"/>
+      </a>
+    </div>
+    <nav class="nav">
+      <a href="/">หน้าแรก</a>
+      <a href="/products/">สินค้า</a>
+      <a href="/promotions/">โปรโมชั่น</a>
+      <a class="active" href="/contact/">ติดต่อเรา</a>
+    </nav>
+    <div class="header-right">
+      <div class="search-box">
+        <input type="text" placeholder="ค้นหา...">
+        <i class="fas fa-search"></i>
+      </div>
+      <a href="/cart/" style="position: relative;">
+        <i class="fas fa-shopping-cart" id="cart-icon" data-count="0"></i>
+      </a>
+      <a href="/account/"><i class="fas fa-user"></i></a>
+    </div>
+    <div class="hamburger"><i class="fas fa-bars"></i></div>
+  </header>
+
+
+  <!-- Promotions: Section -->
+<main class="promo-container">
+  <!-- Hero -->
+  <section class="promo-hero">
+    <h1>โปรโมชั่นเดือด 🔥</h1>
+    <p>รองเท้าแท้ ราคาดี มีคูปอง ลดแรงช่วงเวลาจำกัด</p>
+  </section>
+
+  <!-- Controls -->
+  <section class="promo-controls">
+    <div class="filters">
+      <select id="filter-brand">
+        <option value="">ทุกแบรนด์</option>
+      </select>
+
+      <select id="filter-category">
+        <option value="">ทุกประเภท</option>
+        <option>Running</option>
+        <option>Lifestyle</option>
+        <option>Basketball</option>
+        <option>Training</option>
+      </select>
+
+      <select id="filter-tags" multiple>
+        <option value="new">ใหม่ล่าสุด</option>
+        <option value="best">ขายดี</option>
+        <option value="clearance">เคลียร์สต๊อก</option>
+        <option value="member">สมาชิก</option>
+      </select>
+
+      <div class="price-range">
+        <label>ราคา: <span id="price-min-label">0</span> - <span id="price-max-label">10000</span> ฿</label>
+        <input type="range" id="price-min" min="0" max="10000" step="100" value="0" />
+        <input type="range" id="price-max" min="0" max="10000" step="100" value="10000" />
+      </div>
+    </div>
+
+    <div class="sort-and-search">
+      <input id="search" type="search" placeholder="ค้นหาชื่อสินค้า/รหัสคูปอง..." />
+      <select id="sort">
+        <option value="trending">เรียงตามความนิยม</option>
+        <option value="discount">ส่วนลดมากสุด</option>
+        <option value="ending">ใกล้หมดเขต</option>
+        <option value="price-asc">ราคาต่ำ → สูง</option>
+        <option value="price-desc">ราคาสูง → ต่ำ</option>
+        <option value="newest">ใหม่ล่าสุด</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Grid -->
+  <section id="promo-grid" class="promo-grid" aria-live="polite">
+    <!-- เติมด้วย JS -->
+  </section>
+
+  <!-- Empty -->
+  <section id="promo-empty" class="promo-empty" hidden>
+    <i class="fa-regular fa-face-sad-tear"></i>
+    <p>ไม่พบโปรโมชั่นที่ตรงกับเงื่อนไข</p>
+  </section>
+
+  <!-- Load more -->
+  <div class="promo-loadmore">
+    <button id="load-more" class="btn">โหลดเพิ่ม</button>
+  </div>
+</main>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 SneakerHub. All rights reserved.</p>
+  </footer>
+
+
+  <!-- ===== JS ===== -->
+  <script src="/account/env/env.js"></script>
+  <script src="promotions.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="cart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
