@@ -75,7 +75,7 @@ function renderCart(){
     tr.innerHTML = `
       <td>
         <div class="item">
-          <img src="${it.image || FALLBACK_IMG}" alt="${it.name || ''}" onerror="this.src='${FALLBACK_IMG}'" />
+          <img src="${API_BASE}${it.image || FALLBACK_IMG}" alt="${it.name || ''}" onerror="this.src='${FALLBACK_IMG}'" />
           <div>
             <div class="name">${it.name || '-'}</div>
             ${it.variant ? `<div class="variant">ตัวเลือก: ${it.variant}</div>` : ''}

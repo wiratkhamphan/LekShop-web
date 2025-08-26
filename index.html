@@ -4,140 +4,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ร้านรองเท้า Sneaker Hub</title>
+  <title>ร้านรองเท้า SneakerHub</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/style.css" />
 </head>
 
 <body>
-  <!-- Header  -->
+  <!-- ===== Header ===== -->
   <header class="header">
-    <div class="logo">
-      <a href="/" aria-label="ไปหน้าแรก SneakerHub">
-        <span class="logo-text" style="color:#e6ecf7;">Sneaker<span>Hub</span></span>
-        <img src="/img/logo/Line.png" alt="" class="logo-img"/>
-      </a>
-    </div>
-    <nav class="nav">
-      <a href="/">หน้าแรก</a>
-      <a href="/products/">สินค้า</a>
-      <a href="/promotions/">โปรโมชั่น</a>
-      <a class="active" href="/contact/">ติดต่อเรา</a>
-    </nav>
-    <div class="header-right">
-      <div class="search-box">
-        <input type="text" placeholder="ค้นหา...">
-        <i class="fas fa-search"></i>
+    <div class="container header-inner">
+      <div class="logo">
+        <a href="/" aria-label="ไปหน้าแรก SneakerHub">
+          <span class="logo-text">Sneaker<span>Hub</span></span>
+          <img src="/img/logo/Line.png" alt="SneakerHub" class="logo-img" />
+        </a>
       </div>
-      <a href="/cart/" style="position: relative;">
-        <i class="fas fa-shopping-cart" id="cart-icon" data-count="0"></i>
-      </a>
-      <a href="/account/"><i class="fas fa-user"></i></a>
+
+      <nav class="nav" aria-label="เมนูหลัก">
+        <a href="/">หน้าแรก</a>
+        <a href="/products/">สินค้า</a>
+        <a href="/promotions/">โปรโมชั่น</a>
+        <a class="" href="/contact/">ติดต่อเรา</a>
+      </nav>
+
+      <div class="header-right">
+        <div class="search-box" role="search">
+          <input type="text" placeholder="ค้นหา..." aria-label="ค้นหาสินค้า" />
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </div>
+        <a class="icon-btn" href="/cart/" aria-label="เปิดตะกร้าสินค้า">
+          <i class="fas fa-shopping-cart" id="cart-icon" data-count="0"></i>
+        </a>
+        <a class="icon-btn" href="/account/" aria-label="บัญชีผู้ใช้">
+          <i class="fas fa-user"></i>
+        </a>
+        <button class="icon-btn hamburger" id="menuBtn" aria-label="เมนูมือถือ"><i class="fas fa-bars"></i></button>
+      </div>
     </div>
-    <div class="hamburger"><i class="fas fa-bars"></i></div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="container" style="padding:10px 0 12px;">
+        <div style="display:flex; align-items:center; justify-content: space-between;">
+          <strong>เมนู</strong>
+          <button class="icon-btn" id="closeMenu" aria-label="ปิดเมนู"><i class="fas fa-times"></i></button>
+        </div>
+        <div style="display:grid; gap:8px; margin-top:10px">
+          <a class="category-card" href="/">หน้าแรก</a>
+          <a class="category-card" href="/products/">สินค้า</a>
+          <a class="category-card" href="/promotions/">โปรโมชั่น</a>
+          <a class="category-card" href="/contact/">ติดต่อเรา</a>
+        </div>
+      </div>
+    </div>
   </header>
 
-
-  <!-- Hero Banner -->
+  <!-- ===== Hero ===== -->
   <section class="hero">
-    <div class="hero-content">
-      <h1>สไตล์ที่ใช่ในแบบคุณ</h1>
-      <p>รองเท้าแฟชั่นและกีฬาที่คัดสรรมาเพื่อคุณ</p>
-      <a href="#featured" class="btn-cta">ช้อปเลย</a>
-    </div>
-  </section>
-
-  <!-- Hero Slider -->
-  <section class="popular-section">
-    <div class="carousel-container">
-      <button class="prev-btn">&#10094;</button>
-      <div class="carousel-track" id="hero-slider">
-        <div class="carousel-item">
-          <img src="/img/products/box.png" alt="ยอดนิยม1" />
-        </div>
-        <div class="carousel-item">
-          <img src="/img/products/box.png" alt="ยอดนิยม2" />
-        </div>
-        <div class="carousel-item">
-          <img src="/img/products/box.png" alt="ยอดนิยม3" />
-        </div>
-        <div class="carousel-item">
-          <img src="/img/products/box.png" alt="ยอดนิยม4" />
-        </div>
-        <div class="carousel-item">
-          <img src="/img/products/box.png" alt="ยอดนิยม5" />
-        </div>
-        <div class="carousel-item">
-          <img src="/img/products/box.png" alt="ยอดนิยม6" />
-        </div>
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <h1>สไตล์ที่ใช่ในแบบคุณ</h1>
+        <p>รองเท้าแฟชั่นและกีฬาที่คัดสรรมาเพื่อคุณ—สวมใส่สบาย ดีไซน์โดดเด่น พร้อมโปรแรงทุกสัปดาห์</p>
+        <a href="#featured" class="btn-cta">ช้อปเลย <i class="fa-solid fa-arrow-right"></i></a>
       </div>
-      <button class="next-btn">&#10095;</button>
-    </div>
-    <div class="carousel-dots"></div>
-  </section>
-
-
-
-  <!-- Categories -->
-  <section class="categories">
-    <h2>หมวดหมู่สินค้า</h2>
-    <div class="category-list">
-      <div class="category-card"><i class="fas fa-mars"></i><span>รองเท้าผู้ชาย</span></div>
-      <div class="category-card"><i class="fas fa-venus"></i><span>รองเท้าผู้หญิง</span></div>
-      <div class="category-card"><i class="fas fa-running"></i><span>รองเท้ากีฬา</span></div>
-      <div class="category-card"><i class="fas fa-socks"></i><span>อุปกรณ์เสริม</span></div>
-    </div>
-  </section>
-
-  <!-- Featured Products -->
-  <section class="products" id="featured">
-    <h2>สินค้าแนะนำ</h2>
-    <div class="product-list">
-      <div class="product-card">
-        <img src="/img/products/box.png" alt="product" />
-        <h3>product</h3>
-        <p class="price">฿0</p>
-        <button>เพิ่มลงตะกร้า</button>
-      </div>
-      <div class="product-card">
-        <img src="/img/products/box.png" alt="product" />
-        <h3>product</h3>
-        <p class="price">฿0</p>
-        <button>เพิ่มลงตะกร้า</button>
-      </div>
-      <div class="product-card">
-        <img src="/img/products/box.png" alt="product" />
-        <h3>product</h3>
-        <p class="price">฿0</p>
-        <button>เพิ่มลงตะกร้า</button>
+      <div class="hero-art">
+        <img src="/img/Shopify_Desktop_Top_Banner_98.webp" alt="แบนเนอร์รองเท้ายอดนิยม" />
       </div>
     </div>
   </section>
 
-  <!-- Featured Products -->
-  <!-- <section class="products">
-    <h2>สินค้าแนะนำ</h2>
-    <div class="product-list" id="featured-products"></div>
-  </section> -->
+  <!-- ===== Popular / Slider v2 ===== -->
+  <section class="popular-section v2" aria-labelledby="popularHeading">
+    <div class="container">
+      <div class="popular-head">
+        <h2 id="popularHeading">รุ่นยอดนิยม</h2>
+        <div class="popular-ctrl">
+          <button class="carousel2-btn prev" aria-label="ก่อนหน้า"><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="carousel2-btn next" aria-label="ถัดไป"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
 
+      <div class="carousel2" data-autoplay="true" data-interval="3800">
+        <div class="carousel2-track" role="listbox" aria-live="polite">
+          <!-- จะถูกแทนที่ด้วยข้อมูลจริง -->
+        </div>
+        <div class="carousel2-dots" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
 
-  <!-- Footer -->
+  <!-- ===== Categories ===== -->
+  <section class="section categories">
+    <div class="container">
+      <h2>หมวดหมู่สินค้า</h2>
+      <div class="category-list">
+        <div class="category-card"><i class="fas fa-mars"></i><span>รองเท้าผู้ชาย</span></div>
+        <div class="category-card"><i class="fas fa-venus"></i><span>รองเท้าผู้หญิง</span></div>
+        <div class="category-card"><i class="fas fa-running"></i><span>รองเท้ากีฬา</span></div>
+        <div class="category-card"><i class="fas fa-socks"></i><span>อุปกรณ์เสริม</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Featured Products ===== -->
+  <section class="section products" id="featured">
+    <div class="container">
+      <h2>สินค้าแนะนำ</h2>
+      <div class="product-list" id="featured-products">
+        <!-- จะถูกแทนที่ด้วยข้อมูลจริง -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
   <footer class="footer">
-    <p>© 2025 SneakerHub. All rights reserved.</p>
+    <div class="container footer-inner">
+      <small>© 2025 SneakerHub. All rights reserved.</small>
+      <div class="footer-links">
+        <a href="/privacy/">ความเป็นส่วนตัว</a>
+        <a href="/terms/">เงื่อนไขการใช้งาน</a>
+      </div>
+    </div>
   </footer>
 
-
-
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="cart.js"></script>
-
-  <script src="script.js"></script>
-
+  <!-- ===== Scripts ===== -->
   <script src="/account/env/env.js"></script>
-  <script src="/js/main.js"></script>
-
-  <script src="/js/Products/loadFeaturedProducts.js"></script>
-  <script src="/js/Slider/loadHeroSlider.js"></script>
+  <script src="/Popular.js"></script>
+  <script src="/script.js"></script>
+  <script>
+  </script>
 </body>
 
 </html>

@@ -1,105 +1,51 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // =========================
-  // 🎯 Hero Slider Functions
-  // =========================
-  function getItemsPerView() {
-    if (window.innerWidth <= 600) return 1; // มือถือ
-    if (window.innerWidth <= 900) return 2; // แท็บเล็ต
-    return 3; // จอใหญ่
+
+
+  // ---------- Utils ----------
+  const API_BASE = ENV.api; 
+  const THB = n => `฿${Number(n||0).toLocaleString('th-TH')}`;
+  function safeText(s){ return String(s ?? '').replace(/[<>&"]/g, m=>({ '<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;' }[m])); }
+  function updateCartBadge(){
+    const icon = document.getElementById('cart-icon');
+    try{
+      const cart = JSON.parse(localStorage.getItem('cart')||'[]');
+      const total = cart.reduce((s,i)=> s + (Number(i.quantity)||0), 0);
+      if (!icon) return;
+      if (total>0) icon.setAttribute('data-count', total); else icon.removeAttribute('data-count');
+    }catch(e){}
   }
+  function attachAddToCart(root){
+    root.querySelectorAll('.btn.add[data-id]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.id;
+        const name = btn.dataset.name;
+        const price = Number(btn.dataset.price||0);
 
-  function createDots() {
-    dotsContainer.innerHTML = '';
-    totalPages = Math.ceil(items.length / itemsPerView);
-
-    for (let i = 0; i < totalPages; i++) {
-      const dot = document.createElement('button');
-      if (i === index) dot.classList.add('active');
-      dot.addEventListener('click', () => {
-        index = i;
-        updateCarousel();
+        if (typeof window.addToCart === 'function'){
+          window.addToCart(id, name, price);
+          updateCartBadge();
+          return;
+        }
+        const cart = JSON.parse(localStorage.getItem('cart')||'[]');
+        const i = cart.findIndex(x=>x.id===id);
+        if (i>=0) cart[i].quantity = (cart[i].quantity||1)+1;
+        else cart.push({id, name, price, quantity:1});
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartBadge();
       });
-      dotsContainer.appendChild(dot);
-    }
+    });
   }
 
-  function updateCarousel() {
-    const slideWidth = document.querySelector('.carousel-item').clientWidth;
-    track.style.transform = `translateX(-${index * slideWidth * itemsPerView}px)`;
-    document.querySelectorAll('.carousel-dots button').forEach(dot => dot.classList.remove('active'));
-    if (document.querySelectorAll('.carousel-dots button')[index]) {
-      document.querySelectorAll('.carousel-dots button')[index].classList.add('active');
-    }
-  }
+  // ---------- Mobile menu ----------
+  (function(){
+    const btn = document.getElementById('menuBtn');
+    const closeBtn = document.getElementById('closeMenu');
+    const menu = document.getElementById('mobileMenu');
+    if (btn && menu) btn.addEventListener('click', ()=> menu.style.display = 'block');
+    if (closeBtn && menu) closeBtn.addEventListener('click', ()=> menu.style.display = 'none');
+  })();
 
-  function prevSlide() {
-    index = index > 0 ? index - 1 : totalPages - 1;
-    updateCarousel();
-  }
+  // ---------- init ----------
+  document.addEventListener('DOMContentLoaded', () => {
 
-  function nextSlide() {
-    index = index < totalPages - 1 ? index + 1 : 0;
-    updateCarousel();
-  }
-
-  function autoSlide() {
-    setInterval(() => {
-      nextSlide();
-    }, 10000);
-  }
-
-  function initCarousel() {
-    itemsPerView = getItemsPerView();
-    totalPages = Math.ceil(items.length / itemsPerView);
-    createDots();
-    updateCarousel();
-  }
-
-  // =========================
-  // 🎯 Hamburger Menu Functions
-  // =========================
-  function toggleHamburgerMenu() {
-    nav.classList.toggle('active');
-    hamburger.innerHTML = nav.classList.contains('active')
-      ? '<i class="fas fa-times"></i>'
-      : '<i class="fas fa-bars"></i>';
-  }
-
-  function initHamburgerMenu() {
-    hamburger.addEventListener('click', toggleHamburgerMenu);
-  }
-
-  // =========================
-  // 🚀 Initialization
-  // =========================
-  const track = document.querySelector('.carousel-track');
-  const items = document.querySelectorAll('.carousel-item');
-  const prevBtn = document.querySelector('.prev-btn');
-  const nextBtn = document.querySelector('.next-btn');
-  const dotsContainer = document.querySelector('.carousel-dots');
-
-  let index = 0;
-  let itemsPerView = getItemsPerView();
-  let totalPages = Math.ceil(items.length / itemsPerView);
-
-  const hamburger = document.querySelector('.hamburger');
-  const nav = document.querySelector('.nav');
-
-  // Event Listeners
-  prevBtn.addEventListener('click', prevSlide);
-  nextBtn.addEventListener('click', nextSlide);
-
-  window.addEventListener('resize', () => {
-    itemsPerView = getItemsPerView();
-    totalPages = Math.ceil(items.length / itemsPerView);
-    createDots();
-    index = 0;
-    updateCarousel();
+    updateCartBadge();  // sync badge ครั้งแรก
   });
-
-  // Start everything
-  initCarousel();
-  autoSlide();
-  initHamburgerMenu();
-});
-

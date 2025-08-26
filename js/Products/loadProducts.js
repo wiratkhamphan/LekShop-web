@@ -1,5 +1,4 @@
-// ===== Config & Utils =====
-const API_BASE = (typeof ENV !== "undefined" && ENV.api) ? ENV.api : "";
+const API_BASE = ENV.api ;
 const FALLBACK_IMG = "/img/products/box.png";
 const THB = n => `฿${Number(n || 0).toLocaleString("th-TH")}`;
 
@@ -141,10 +140,10 @@ function productCard(p){
   const meta = [brand, category, gender].filter(Boolean).join(" • ");
 
   return `
-  <article class="card">
+  <article class="product-card ">
     <a class="thumb" href="/products/${id || ""}" aria-label="${name}">
       ${badge}
-      <img src="${image || FALLBACK_IMG}" alt="${name}" onerror="this.src='${FALLBACK_IMG}'" />
+      <img src="${API_BASE}${image || FALLBACK_IMG}" alt="${name}" onerror="this.src='${FALLBACK_IMG}'" />
     </a>
     <div class="body">
       <div class="name">${name || "Product"}</div>

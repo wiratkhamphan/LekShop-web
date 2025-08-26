@@ -1,0 +1,204 @@
+:root {
+            --prof-bg: #ffffff;
+            --prof-text: #222;
+            --prof-muted: #666;
+            --prof-border: #e6e6e6;
+            --prof-primary: #007bff;
+            --prof-danger: #e53935;
+            --prof-card: #fafafa;
+            --prof-shadow: 0 6px 24px rgba(0, 0, 0, .06);
+            --prof-radius: 12px;
+        }
+
+        /* ระยะห่างใต้ header เดิมของคุณ */
+        .prof-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 96px 20px 32px;
+        }
+
+        /* การ์ดโปรไฟล์ */
+        .prof-card {
+            background: var(--prof-bg);
+            border: 1px solid var(--prof-border);
+            border-radius: var(--prof-radius);
+            box-shadow: var(--prof-shadow);
+            overflow: clip;
+        }
+
+        /* ส่วนหัวการ์ด */
+        .prof-header {
+            display: grid;
+            grid-template-columns: 72px 1fr auto;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 20px;
+            background: linear-gradient(180deg, #fff, #fafafa);
+            border-bottom: 1px solid var(--prof-border);
+        }
+
+        .prof-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: #f2f6ff;
+            color: var(--prof-primary);
+            border: 1px solid #dce8ff;
+            font-size: 36px;
+        }
+
+        .prof-title h2 {
+            margin: 0 0 2px;
+            color: var(--prof-text);
+            font-size: 1.35rem;
+        }
+
+        .prof-title p {
+            margin: 0;
+            color: var(--prof-muted);
+            font-size: .95rem;
+        }
+
+        .prof-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .prof-btn {
+            border: 1px solid var(--prof-border);
+            background: #f8f8f8;
+            color: var(--prof-text);
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .prof-btn:hover {
+            background: #eee;
+        }
+
+        .prof-btn.primary {
+            background: var(--prof-primary);
+            color: #fff;
+            border-color: var(--prof-primary);
+            font-weight: 600;
+        }
+
+        .prof-btn.danger {
+            background: var(--prof-danger);
+            color: #fff;
+            border-color: var(--prof-danger);
+            font-weight: 600;
+        }
+
+        /* เนื้อหาด้านใน */
+        .prof-body {
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 20px;
+            padding: 18px 20px 20px;
+        }
+
+        @media (max-width: 900px) {
+            .prof-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .prof-panel {
+            background: var(--prof-card);
+            border: 1px solid var(--prof-border);
+            border-radius: var(--prof-radius);
+            padding: 16px;
+        }
+
+        .prof-panel h3 {
+            margin: 0 0 10px;
+            font-size: 1.05rem;
+            color: var(--prof-text);
+        }
+
+        .prof-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .prof-item {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .prof-item .label {
+            color: var(--prof-muted);
+        }
+
+        .prof-item .value {
+            color: var(--prof-text);
+        }
+
+        @media (max-width: 560px) {
+            .prof-item {
+                grid-template-columns: 1fr;
+            }
+
+            .prof-item .label {
+                font-size: .9rem;
+            }
+        }
+
+        /* ป้ายสถานะ */
+        .prof-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .prof-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eef6ff;
+            color: #0b57d0;
+            border: 1px solid #d9e9ff;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: .85rem;
+        }
+
+        /* ปุ่มออกจากระบบ (สำรอง ถ้าใช้ account.js แล้วมีฟังก์ชัน logout อยู่แล้ว ให้ลิงก์ปุ่มนี้ไปเรียกได้เลย) */
+        .prof-logout {
+            width: 100%;
+            margin-top: 12px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* กล่องเสริมด้านขวา (เช่น เปลี่ยนรหัสผ่าน / ที่อยู่จัดส่งในอนาคต) */
+        .prof-subpanel {
+            display: grid;
+            gap: 12px;
+        }
+
+        .prof-note {
+            background: #fff;
+            border: 1px dashed var(--prof-border);
+            border-radius: 10px;
+            padding: 12px;
+            color: #444;
+            font-size: .95rem;
+        }
+
+        /* เงาโฟกัสเมื่อกดปุ่มด้วยคีย์บอร์ด */
+        .prof-btn:focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, .2);
+        }

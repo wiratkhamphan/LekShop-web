@@ -2,41 +2,70 @@
 <html lang="th">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ร้านรองเท้า Sneaker Hub</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link rel="stylesheet" href="/style.css" />
-<link rel="stylesheet" href="products.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ร้านรองเท้า SneakerHub</title>
 
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="products.css" />
 </head>
 
+
 <body>
-  <!-- Header  -->
+<!-- ===== Header ===== -->
   <header class="header">
-    <div class="logo">
-      <a href="/" aria-label="ไปหน้าแรก SneakerHub">
-        <span class="logo-text" style="color:#e6ecf7;">Sneaker<span>Hub</span></span>
-        <img src="/img/logo/Line.png" alt="" class="logo-img"/>
-      </a>
-    </div>
-    <nav class="nav">
-      <a href="/">หน้าแรก</a>
-      <a href="/products/">สินค้า</a>
-      <a href="/promotions/">โปรโมชั่น</a>
-      <a class="active" href="/contact/">ติดต่อเรา</a>
-    </nav>
-    <div class="header-right">
-      <div class="search-box">
-        <input type="text" placeholder="ค้นหา...">
-        <i class="fas fa-search"></i>
+    <div class="container header-inner">
+      <div class="logo">
+        <a href="/" aria-label="ไปหน้าแรก SneakerHub">
+          <span class="logo-text">Sneaker<span>Hub</span></span>
+          <img src="/img/logo/Line.png" alt="SneakerHub" class="logo-img" />
+        </a>
       </div>
-      <a href="/cart/" style="position: relative;">
-        <i class="fas fa-shopping-cart" id="cart-icon" data-count="0"></i>
-      </a>
-      <a href="/account/"><i class="fas fa-user"></i></a>
+
+      <nav class="nav" aria-label="เมนูหลัก">
+        <a href="/">หน้าแรก</a>
+        <a href="/products/">สินค้า</a>
+        <a href="/promotions/">โปรโมชั่น</a>
+        <a class="" href="/contact/">ติดต่อเรา</a>
+      </nav>
+
+      <div class="header-right">
+        <div class="search-box" role="search">
+          <input type="text" placeholder="ค้นหา..." aria-label="ค้นหาสินค้า" />
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </div>
+        <a class="icon-btn" href="/cart/" aria-label="เปิดตะกร้าสินค้า">
+          <i class="fas fa-shopping-cart" id="cart-icon" data-count="0"></i>
+        </a>
+        <a class="icon-btn" href="/account/" aria-label="บัญชีผู้ใช้">
+          <i class="fas fa-user"></i>
+        </a>
+        <button class="icon-btn hamburger" id="menuBtn" aria-label="เมนูมือถือ"><i class="fas fa-bars"></i></button>
+      </div>
     </div>
-    <div class="hamburger"><i class="fas fa-bars"></i></div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="container" style="padding:10px 0 12px;">
+        <div style="display:flex; align-items:center; justify-content: space-between;">
+          <strong>เมนู</strong>
+          <button class="icon-btn" id="closeMenu" aria-label="ปิดเมนู"><i class="fas fa-times"></i></button>
+        </div>
+        <div style="display:grid; gap:8px; margin-top:10px">
+          <a class="category-card" href="/">หน้าแรก</a>
+          <a class="category-card" href="/products/">สินค้า</a>
+          <a class="category-card" href="/promotions/">โปรโมชั่น</a>
+          <a class="category-card" href="/contact/">ติดต่อเรา</a>
+        </div>
+      </div>
+    </div>
   </header>
 
 
@@ -115,8 +144,9 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="/account/env/env.js"></script>
-    <script src="/cart.js"></script>
     <script src="/js/Products/loadProducts.js"></script>
+     <script src="/script.js"></script>
+  <script src="/Popular.js"></script>
 
 </body>
 
