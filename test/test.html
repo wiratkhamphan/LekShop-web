@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SneakerHub Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root{
+      --c-bg:#0b0c10; --c-card:#111218; --c-text:#e6ecf7; --c-muted:#a8b3cf; --c-line:#232634; --c-accent:#3b82f6; --c-green:#22c55e; --c-red:#ef4444; --radius:16px; --shadow:0 12px 36px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0b0c10 0%,#0f1117 100%);color:var(--c-text);font-family:'Prompt',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:inherit;text-decoration:none}
+    .layout{display:grid;grid-template-columns:260px 1fr;min-height:100dvh}
+    .sidebar{position:sticky;top:0;height:100dvh;background:#0c0d12;border-right:1px solid var(--c-line);padding:18px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;margin-bottom:10px}
+    .user{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--c-line);border-radius:14px;background:#0f1117;margin-bottom:14px}
+    .nav a{display:flex;gap:10px;align-items:center;padding:12px;border-radius:12px;color:var(--c-muted)}
+    .nav a.active,.nav a:hover{background:#151826;color:#fff}
+    .content{padding:20px 22px}
+    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .card{background:var(--c-card);border:1px solid var(--c-line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px}
+    .muted{color:var(--c-muted)}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{border:1px solid var(--c-line);background:#141924;color:#fff;border-radius:12px;padding:10px 12px;cursor:pointer}
+    .btn.primary{background:linear-gradient(135deg,var(--c-accent),#22c55e);border:0}
+    .btn.danger{background:linear-gradient(135deg,#ef4444,#b91c1c);border:0}
+    .btn.icon{width:40px;height:40px;display:grid;place-items:center}
+
+    .panel{background:var(--c-card);border:1px solid var(--c-line);border-radius:18px;padding:16px;box-shadow:var(--shadow);margin-top:16px}
+    .panel h3{margin:0 0 8px}
+
+    .table{width:100%;border-collapse:collapse;margin-top:8px}
+    .table th,.table td{border-bottom:1px solid var(--c-line);padding:10px;text-align:left}
+    .table th{color:var(--c-muted);font-weight:500}
+
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+    .input{display:flex;flex-direction:column;gap:6px}
+    .input input,.input select,.input textarea{background:#0f1117;border:1px solid var(--c-line);color:#fff;border-radius:12px;padding:10px}
+    .input input:focus,.input textarea:focus{outline:none;box-shadow:0 0 0 3px rgba(59,130,246,.25)}
+    .hint{font-size:12px;color:var(--c-muted)}
+
+    .flex{display:flex;gap:10px;align-items:center}
+    .between{display:flex;align-items:center;justify-content:space-between}
+
+    .toast{position:fixed;right:16px;bottom:16px;background:#0f1117;border:1px solid var(--c-line);border-radius:14px;padding:10px 14px;display:flex;gap:10px;align-items:center;opacity:0;transform:translateY(10px);transition:.25s}
+    .toast.show{opacity:1;transform:translateY(0)}
+
+    @media (max-width: 1080px){.cards{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:78px 1fr}.brand span{display:none}.user{display:none}.nav a span{display:none}}
+    @media (max-width: 680px){.cards{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><i class="fa-solid fa-shield"></i> <span>Admin</span></div>
+    <div class="user"><i class="fa-solid fa-user-shield"></i> <div><div id="u-name">—</div><div class="muted" id="u-role">Admin</div></div></div>
+    <nav class="nav">
+      <a href="#dashboard" data-page="dashboard" class="active"><i class="fa-solid fa-gauge"></i> <span>แดชบอร์ด</span></a>
+      <a href="#products" data-page="products"><i class="fa-solid fa-box"></i> <span>สินค้า</span></a>
+      <a href="#promotions" data-page="promotions"><i class="fa-solid fa-tags"></i> <span>โปรโมชัน</span></a>
+      <a href="#promo-items" data-page="promo-items"><i class="fa-solid fa-badge-percent"></i> <span>สินค้าในโปรฯ</span></a>
+      <a href="#logout" id="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> <span>ออกจากระบบ</span></a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <div class="header between">
+      <h2 id="page-title">แดชบอร์ด</h2>
+      <div class="toolbar">
+        <button class="btn icon" id="btn-refresh" title="รีเฟรช"><i class="fa-solid fa-rotate"></i></button>
+        <button class="btn icon" id="btn-theme" title="ธีม"><i class="fa-solid fa-sun"></i></button>
+      </div>
+    </div>
+
+    <!-- Dashboard -->
+    <section id="page-dashboard">
+      <div class="cards">
+        <div class="card"><h3>สินค้าทั้งหมด</h3><div class="muted" id="m-products">—</div></div>
+        <div class="card"><h3>โปรโมชันที่ใช้งาน</h3><div class="muted" id="m-promos">—</div></div>
+        <div class="card"><h3>สินค้าติดโปรฯ</h3><div class="muted" id="m-promo-items">—</div></div>
+        <div class="card"><h3>อัปเดตล่าสุด</h3><div class="muted" id="m-last">—</div></div>
+      </div>
+
+      <div class="panel">
+        <h3>Quick Actions</h3>
+        <div class="flex">
+          <button class="btn primary" onclick="openProductForm()"><i class="fa-solid fa-plus"></i> เพิ่มสินค้า</button>
+          <button class="btn" onclick="openPromoForm()"><i class="fa-solid fa-plus"></i> สร้างโปรโมชัน</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section id="page-products" style="display:none">
+      <div class="panel between">
+        <h3>สินค้า</h3>
+        <div class="flex">
+          <input id="q-products" placeholder="ค้นหา…" class="input" style="padding:8px 10px;border-radius:10px;border:1px solid var(--c-line);background:#0f1117;color:#fff" />
+          <button class="btn" onclick="loadProducts()"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <button class="btn primary" onclick="openProductForm()"><i class="fa-solid fa-plus"></i> เพิ่มสินค้า</button>
+        </div>
+      </div>
+      <div class="panel">
+        <table class="table" id="tbl-products">
+          <thead><tr><th>รหัส</th><th>ชื่อสินค้า</th><th>คงเหลือ</th><th>ราคาขาย</th><th>อัปเดต</th><th style="width:140px">จัดการ</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Promotions -->
+    <section id="page-promotions" style="display:none">
+      <div class="panel between">
+        <h3>โปรโมชัน</h3>
+        <div class="flex">
+          <button class="btn primary" onclick="openPromoForm()"><i class="fa-solid fa-plus"></i> เพิ่มโปรโมชัน</button>
+        </div>
+      </div>
+      <div class="panel">
+        <table class="table" id="tbl-promos">
+          <thead><tr><th>#</th><th>ชื่อโปรฯ</th><th>ช่วงเวลา</th><th>สถานะ</th><th style="width:140px">จัดการ</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Promotion Items -->
+    <section id="page-promo-items" style="display:none">
+      <div class="panel">
+        <h3>เพิ่มสินค้าเข้าโปรโมชัน</h3>
+        <div class="grid-2">
+          <div class="input">
+            <label>เลือกโปรโมชัน</label>
+            <select id="sel-promo"></select>
+            <div class="hint">จะเพิ่มรายการเข้าโปรโมชันที่เลือก</div>
+          </div>
+          <div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>เพิ่มรายการ (Batch)</h3>
+        <div class="grid-2">
+          <div class="input">
+            <label>รายการสินค้า (JSON)</label>
+            <textarea id="ti-json" rows="8" placeholder='[
+  {"product_id":"SKU001","discount_percent":10},
+  {"product_id":"SKU002","special_price":1990}
+]'></textarea>
+            <div class="hint">ฟิลด์ที่รองรับ: product_id, discount_percent, discount_amount, special_price</div>
+          </div>
+          <div class="input">
+            <label>&nbsp;</label>
+            <button class="btn primary" onclick="sendPromoItems()"><i class="fa-solid fa-paper-plane"></i> ส่งรายการ</button>
+            <button class="btn" onclick="fillSamplePromoItems()">ใส่ตัวอย่าง</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"><i class="fa-solid fa-circle-check" style="color:var(--c-green)"></i><span id="toast-text">บันทึกสำเร็จ</span></div>
+
+<script>
+  // ===================== Config & Helpers =====================
+  const API = (window.API_BASE || '').replace(/\/+$/,''); // ตั้งจากไฟล์ env ภายนอก
+  const ENDPOINTS = {
+    login: '/api/auth/login',
+    me: '/api/auth/me',
+    products: '/api/admin/products',
+    promos: '/api/admin/promotions',
+    promoItems: (id) => `/api/admin/promotions/${id}/items`,
+  };
+
+  const $ = (s,el=document)=>el.querySelector(s); const $$=(s,el=document)=>[...el.querySelectorAll(s)];
+  const THB = n=>`฿${Number(n||0).toLocaleString('th-TH')}`;
+  function toast(msg){ $('#toast-text').textContent = msg||'บันทึกสำเร็จ'; $('#toast').classList.add('show'); setTimeout(()=>$('#toast').classList.remove('show'),1600); }
+
+  function authHeader(){ const t = localStorage.getItem('token'); return t? { 'Authorization': 'Bearer '+t }: {}; }
+  async function apiJSON(path, opts={}){
+    const url = API + path; const headers = Object.assign({'Content-Type':'application/json'}, authHeader(), opts.headers||{});
+    const res = await fetch(url, {...opts, headers, credentials:'include'});
+    if(!res.ok){ throw new Error((await res.text())||res.statusText); }
+    const ct = res.headers.get('content-type')||''; return ct.includes('application/json')? res.json(): null;
+  }
+
+  function setPage(id){ $$('.nav a').forEach(a=>a.classList.toggle('active', a.dataset.page===id));
+    $('#page-title').textContent = { 'dashboard':'แดชบอร์ด','products':'สินค้า','promotions':'โปรโมชัน','promo-items':'สินค้าในโปรฯ'}[id]||id;
+    $$('#page-dashboard, #page-products, #page-promotions, #page-promo-items').forEach(s=> s.style.display='none');
+    $('#page-'+id).style.display='block';
+  }
+  $$('.nav a[data-page]').forEach(a=>a.addEventListener('click', e=>{ e.preventDefault(); setPage(a.dataset.page); if(a.dataset.page==='products') loadProducts(); if(a.dataset.page==='promotions') loadPromos(); if(a.dataset.page==='promo-items') initPromoItemsPage(); }))
+
+  $('#btn-theme').addEventListener('click',()=>{ document.body.classList.toggle('light'); })
+  $('#btn-refresh').addEventListener('click',()=>{ const id = $$('.nav a.active')[0].dataset.page; if(id==='products') loadProducts(); if(id==='promotions') loadPromos(); if(id==='dashboard') refreshMetrics(); })
+  $('#btn-logout').addEventListener('click', e=>{ e.preventDefault(); localStorage.removeItem('token'); location.reload(); })
+
+  // ===================== Auth (Demo) =====================
+  async function ensureLogin(){
+    try{
+      const me = await apiJSON(ENDPOINTS.me, { method:'GET' }); $('#u-name').textContent = me?.name||'Admin'; $('#u-role').textContent = me?.role||'Admin';
+    }catch(e){
+      // demo: popup login form
+      const email = prompt('อีเมล (demo):','admin@example.com'); if(email===null) return; const password = prompt('รหัสผ่าน (demo):','1234'); if(password===null) return;
+      try{
+        const r = await apiJSON(ENDPOINTS.login,{ method:'POST', body: JSON.stringify({ email, password }) });
+        if(r?.token){ localStorage.setItem('token', r.token); toast('เข้าสู่ระบบแล้ว'); ensureLogin(); }
+      }catch(err){ alert('เข้าสู่ระบบไม่สำเร็จ'); }
+    }
+  }
+
+  // ===================== Dashboard =====================
+  async function refreshMetrics(){
+    try{
+      const [prods, promos] = await Promise.all([
+        apiJSON(ENDPOINTS.products+'?limit=1&count=1'),
+        apiJSON(ENDPOINTS.promos+'?limit=1&count=1'),
+      ]);
+      $('#m-products').textContent = prods?.total ?? '—';
+      $('#m-promos').textContent = promos?.total ?? '—';
+      $('#m-promo-items').textContent = promos?.promo_items ?? '—';
+      $('#m-last').textContent = new Date().toLocaleString('th-TH');
+    }catch(e){ /* silently */ }
+  }
+
+  // ===================== Products =====================
+  function rowProduct(p){
+    const dt = p.updated_at ? new Date(p.updated_at).toLocaleString('th-TH') : '';
+    return `<tr>
+      <td>${p.product_id||p.id||''}</td>
+      <td>${p.name||''}</td>
+      <td>${p.quantity ?? '-'}</td>
+      <td>${THB(p.sell_price||0)}</td>
+      <td class="muted">${dt}</td>
+      <td>
+        <button class="btn" onclick='openProductForm(${JSON.stringify(p)})'><i class="fa-regular fa-pen-to-square"></i></button>
+        <button class="btn danger" onclick='deleteProduct(${JSON.stringify(p)})'><i class="fa-regular fa-trash-can"></i></button>
+      </td>
+    </tr>`
+  }
+  async function loadProducts(){
+    const q = $('#q-products').value.trim();
+    const url = ENDPOINTS.products + (q? ('?search='+encodeURIComponent(q)):'');
+    try{
+      const data = await apiJSON(url, { method:'GET' });
+      const rows = (data?.items||data||[]).map(rowProduct).join('');
+      $('#tbl-products tbody').innerHTML = rows || `<tr><td colspan="6" class="muted">ไม่พบข้อมูล</td></tr>`;
+      if(typeof data?.total!=='undefined') $('#m-products').textContent = data.total;
+    }catch(e){ alert('โหลดสินค้าไม่สำเร็จ'); }
+  }
+
+  function openProductForm(p={}){
+    const name = prompt('ชื่อสินค้า:', p.name||''); if(name===null) return;
+    const pid = prompt('รหัสสินค้า:', p.product_id||''); if(pid===null) return;
+    const qty = prompt('จำนวนคงเหลือ:', p.quantity ?? 0); if(qty===null) return;
+    const price = prompt('ราคาขาย:', p.sell_price ?? 0); if(price===null) return;
+    const payload = { name, product_id:pid, quantity:Number(qty), sell_price:Number(price) };
+    if(p && (p.id||p.product_id)){
+      // update
+      apiJSON(ENDPOINTS.products + '/' + (p.id||p.product_id), { method:'PUT', body: JSON.stringify(payload) })
+        .then(()=>{ toast('แก้ไขแล้ว'); loadProducts(); refreshMetrics(); })
+        .catch(()=> alert('แก้ไขไม่สำเร็จ'))
+    }else{
+      // create
+      apiJSON(ENDPOINTS.products, { method:'POST', body: JSON.stringify(payload) })
+        .then(()=>{ toast('เพิ่มสินค้าแล้ว'); loadProducts(); refreshMetrics(); })
+        .catch(()=> alert('เพิ่มสินค้าไม่สำเร็จ'))
+    }
+  }
+  function deleteProduct(p){
+    if(!confirm('ลบสินค้า: '+(p.name||p.product_id)+' ?')) return;
+    apiJSON(ENDPOINTS.products + '/' + (p.id||p.product_id), { method:'DELETE' })
+      .then(()=>{ toast('ลบแล้ว'); loadProducts(); refreshMetrics(); })
+      .catch(()=> alert('ลบไม่สำเร็จ'))
+  }
+
+  // ===================== Promotions =====================
+  function rowPromo(x){
+    const s = x.start_at? new Date(x.start_at).toLocaleDateString('th-TH'):'';
+    const e = x.end_at? new Date(x.end_at).toLocaleDateString('th-TH'):'';
+    return `<tr>
+      <td>${x.id}</td>
+      <td>${x.title||'-'}</td>
+      <td class="muted">${s} – ${e}</td>
+      <td>${x.is_active? '<span style="color:var(--c-green)">ใช้งาน</span>' : '<span class="muted">ปิด</span>'}</td>
+      <td>
+        <button class="btn" onclick='openPromoForm(${JSON.stringify(x)})'><i class="fa-regular fa-pen-to-square"></i></button>
+        <button class="btn" onclick='gotoPromoItems(${x.id})'><i class="fa-solid fa-badge-percent"></i></button>
+        <button class="btn danger" onclick='deletePromo(${x.id})'><i class="fa-regular fa-trash-can"></i></button>
+      </td>
+    </tr>`
+  }
+  async function loadPromos(){
+    try{
+      const data = await apiJSON(ENDPOINTS.promos, { method:'GET' });
+      const rows = (data?.items||data||[]).map(rowPromo).join('');
+      $('#tbl-promos tbody').innerHTML = rows || `<tr><td colspan="5" class="muted">ไม่พบโปรโมชัน</td></tr>`;
+      if(typeof data?.total!=='undefined') $('#m-promos').textContent = data.total;
+    }catch(e){ alert('โหลดโปรโมชันไม่สำเร็จ'); }
+  }
+  function openPromoForm(p={}){
+    const title = prompt('ชื่อโปรโมชัน:', p.title||''); if(title===null) return;
+    const desc = prompt('คำอธิบายโปรโมชัน:', p.description||''); if(desc===null) return;
+    const start = prompt('วันเริ่ม (YYYY-MM-DD):', p.start_at?.slice?.(0,10) || ''); if(start===null) return;
+    const end = prompt('วันสิ้นสุด (YYYY-MM-DD):', p.end_at?.slice?.(0,10) || ''); if(end===null) return;
+    const isActive = confirm('เปิดใช้งานโปรนี้เลยหรือไม่?');
+    const payload = { title, description:desc, start_at:start, end_at:end, is_active:isActive };
+    if(p && p.id){
+      apiJSON(ENDPOINTS.promos + '/' + p.id, { method:'PUT', body: JSON.stringify(payload) })
+        .then(()=>{ toast('อัปเดตโปรโมชันแล้ว'); loadPromos(); refreshMetrics(); })
+        .catch(()=> alert('อัปเดตไม่สำเร็จ'))
+    }else{
+      apiJSON(ENDPOINTS.promos, { method:'POST', body: JSON.stringify(payload) })
+        .then(()=>{ toast('สร้างโปรโมชันแล้ว'); loadPromos(); refreshMetrics(); })
+        .catch(()=> alert('สร้างไม่สำเร็จ'))
+    }
+  }
+  function deletePromo(id){
+    if(!confirm('ลบโปรโมชัน #' + id + ' ?')) return;
+    apiJSON(ENDPOINTS.promos + '/' + id, { method:'DELETE' })
+      .then(()=>{ toast('ลบแล้ว'); loadPromos(); refreshMetrics(); })
+      .catch(()=> alert('ลบไม่สำเร็จ'))
+  }
+  function gotoPromoItems(id){ setPage('promo-items'); $('#sel-promo').value = String(id); }
+
+  // ===================== Promo Items =====================
+  async function initPromoItemsPage(){
+    // โหลดรายการโปรฯสำหรับเลือก
+    try{
+      const data = await apiJSON(ENDPOINTS.promos, { method:'GET' });
+      $('#sel-promo').innerHTML = (data?.items||data||[]).map(x=>`<option value="${x.id}">#${x.id} — ${x.title}</option>`).join('');
+    }catch(e){ $('#sel-promo').innerHTML = '<option>โหลดไม่สำเร็จ</option>'; }
+  }
+  function fillSamplePromoItems(){
+    $('#ti-json').value = `[
+  {"product_id":"SKU001","discount_percent":15},
+  {"product_id":"SKU002","discount_amount":200},
+  {"product_id":"SKU003","special_price":1890}
+]`;
+  }
+  async function sendPromoItems(){
+    const id = $('#sel-promo').value; if(!id){ alert('กรุณาเลือกโปรโมชัน'); return; }
+    let payload;
+    try{ payload = JSON.parse($('#ti-json').value || '[]'); }
+    catch{ alert('JSON ไม่ถูกต้อง'); return; }
+    if(!Array.isArray(payload) || payload.length===0){ alert('ไม่มีรายการใน JSON'); return; }
+
+    try{
+      await apiJSON(ENDPOINTS.promoItems(id), { method:'POST', body: JSON.stringify(payload) });
+      toast('เพิ่มสินค้าเข้าโปรโมชันแล้ว');
+    }catch(e){ alert('เพิ่มไม่สำเร็จ: '+e.message); }
+  }
+
+  // ===================== Boot =====================
+  (async function(){
+    await ensureLogin();
+    setPage('dashboard');
+    refreshMetrics();
+  })();
+</script>
+</body>
+</html>

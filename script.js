@@ -44,8 +44,4 @@
     if (closeBtn && menu) closeBtn.addEventListener('click', ()=> menu.style.display = 'none');
   })();
 
-  // ---------- init ----------
-  document.addEventListener('DOMContentLoaded', () => {
-
-    updateCartBadge();  // sync badge ครั้งแรก
-  });
+ 

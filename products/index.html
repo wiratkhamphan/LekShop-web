@@ -6,27 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ร้านรองเท้า SneakerHub</title>
 
-  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-  <!-- Styles -->
   <link rel="stylesheet" href="/style.css" />
   <link rel="stylesheet" href="products.css" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ร้านรองเท้า Sneaker Hub</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link rel="stylesheet" href="/style.css" />
-<link rel="stylesheet" href="products.css" />
-
 </head>
 
 
+
 <body>
-<!-- ===== Header ===== -->
+  <!-- ===== Header ===== -->
   <header class="header">
     <div class="container header-inner">
       <div class="logo">
@@ -76,84 +67,71 @@
   </header>
 
 
-<!-- วางแทน section เดิม -->
-<main class="products-page container">
-  <!-- Toolbar -->
-  <div class="toolbar">
-    <div class="left">
-      <button id="filter-toggle" class="btn-outline">
-        <i class="fa-solid fa-sliders"></i> ตัวกรอง
-      </button>
-      <div class="search-wrap">
-        <input id="search" type="search" placeholder="ค้นหาชื่อสินค้า / แบรนด์ / หมวดหมู่…" />
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </div>
-    </div>
-    <div class="right">
-      <label class="sort">
-        เรียงโดย
-        <select id="sort">
-          <option value="popularity">ความนิยม</option>
-          <option value="newest">มาใหม่</option>
-          <option value="price_asc">ราคาต่ำ → สูง</option>
-          <option value="price_desc">ราคาสูง → ต่ำ</option>
-        </select>
+  <main class="container products-container"
+    style="margin-top: calc(var(--header-h,72px) + 16px); padding: 16px 0 40px;">
+    <!-- เครื่องมือค้นหา/จัดเรียง -->
+    <section class="toolbar" style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
+      <!-- ใช้กล่องค้นหาใน header ได้อยู่แล้ว แต่เผื่อหน้า products แยก -->
+      <input id="q" type="search" placeholder="ค้นหาชื่อสินค้า / แบรนด์ / หมวด..."
+        style="flex:1; padding:10px 12px; border:1px solid var(--c-line,#e5e7eb); border-radius:10px;">
+      <select id="brand" style="padding:10px 12px; border:1px solid var(--c-line,#e5e7eb); border-radius:10px;">
+        <option value="">ทุกแบรนด์</option>
+      </select>
+      <select id="category" style="padding:10px 12px; border:1px solid var(--c-line,#e5e7eb); border-radius:10px;">
+        <option value="">ทุกหมวด</option>
+      </select>
+      <select id="sort" style="padding:10px 12px; border:1px solid var(--c-line,#e5e7eb); border-radius:10px;">
+        <option value="new">มาใหม่</option>
+        <option value="price_asc">ราคาต่ำ→สูง</option>
+        <option value="price_desc">ราคาสูง→ต่ำ</option>
+        <option value="name">ชื่อ A→Z</option>
+      </select>
+    </section>
+
+    <!-- ฟิลเตอร์ราคา -->
+    <section class="price-filter"
+      style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:16px;">
+      <input id="min_price" type="number" min="0" placeholder="ราคาต่ำสุด"
+        style="width:140px; padding:8px 10px; border:1px solid var(--c-line,#e5e7eb); border-radius:8px;">
+      <span>–</span>
+      <input id="max_price" type="number" min="0" placeholder="ราคาสูงสุด"
+        style="width:140px; padding:8px 10px; border:1px solid var(--c-line,#e5e7eb); border-radius:8px;">
+      <label style="display:flex; gap:6px; align-items:center; margin-left:12px;">
+        <input id="recommended" type="checkbox"> เฉพาะสินค้าแนะนำ
       </label>
-    </div>
-  </div>
+      <label style="display:flex; gap:6px; align-items:center;">
+        <input id="popular" type="checkbox"> เฉพาะรุ่นยอดนิยม
+      </label>
+      <button id="apply" class="btn"
+        style="padding:10px 14px; border-radius:10px; border:1px solid var(--c-line,#e5e7eb); background:#fff;">ใช้ฟิลเตอร์</button>
+      <button id="reset" class="btn"
+        style="padding:10px 14px; border-radius:10px; border:1px solid var(--c-line,#e5e7eb); background:#fff;">ล้าง</button>
+    </section>
 
-  <!-- Filters -->
-  <aside id="filters" class="filters">
-    <div class="filter-group">
-      <h4>หมวดหมู่</h4>
-      <div class="chips" id="category-chips">
-        <!-- เติมด้วย JS -->
-      </div>
-    </div>
-    <div class="filter-group">
-      <h4>เพศ</h4>
-      <label><input type="checkbox" name="gender" value="men" /> ผู้ชาย</label>
-      <label><input type="checkbox" name="gender" value="women" /> ผู้หญิง</label>
-      <label><input type="checkbox" name="gender" value="unisex" /> Unisex</label>
-    </div>
-    <div class="filter-group">
-      <h4>ช่วงราคา (฿)</h4>
-      <div class="price-range">
-        <input type="number" id="price-min" placeholder="ต่ำสุด" min="0" />
-        <span>–</span>
-        <input type="number" id="price-max" placeholder="สูงสุด" min="0" />
-      </div>
-      <button id="apply-price" class="btn">ใช้ตัวกรองราคา</button>
-    </div>
-    <button id="clear-filters" class="btn-ghost">ล้างตัวกรองทั้งหมด</button>
-  </aside>
+    <!-- รายการสินค้า -->
+    <section id="results" class="grid"
+      style="display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:16px; min-height:120px;">
+    </section>
 
-  <!-- Results header -->
-  <div class="results-head">
-    <h2>สินค้าทั้งหมด</h2>
-    <span id="result-count" class="muted">กำลังโหลด…</span>
-  </div>
+    <!-- แบ่งหน้า -->
+    <nav id="pager" style="display:flex; gap:8px; justify-content:center; margin-top:18px;"></nav>
+  </main>
 
-  <!-- Product grid -->
-  <section class="grid" id="product-list" aria-live="polite">
-    <!-- เติมด้วย JS -->
-  </section>
 
-  <!-- Load more -->
-  <div class="load-more">
-    <button id="load-more" class="btn">โหลดเพิ่ม</button>
-  </div>
-</main>
-    <!-- Footer -->
-    <footer class="footer">
-        <p>© 2025 SneakerHub. All rights reserved.</p>
-    </footer>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="/account/env/env.js"></script>
-    <script src="/js/Products/loadProducts.js"></script>
-     <script src="/script.js"></script>
-  <script src="/Popular.js"></script>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 SneakerHub. All rights reserved.</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+  <script src="/account/env/env.js" defer></script>
+  <script src="/script.js" defer></script>
+  <script src="products.js" defer></script>
+<script src="/main.js" defer></script>
+
 
 </body>
 

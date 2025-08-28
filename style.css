@@ -1,6 +1,3 @@
-/* =========================
-   White–Black Corporate Theme (Full)
-   ========================= */
 :root{
   --header-h: 72px;
   --c-bg: #ffffff;
@@ -8,8 +5,8 @@
   --c-text: #111111;
   --c-muted: #6b7280;
   --c-line: #e5e7eb;
-  --c-accent: #000000;   /* ดำเรียบหรู */
-  --c-accent-2: #9ca3af; /* เทาอ่อน */
+  --c-accent: #1d4ed8;  
+  --c-accent-2: #9ca3af; 
   --radius: 16px;
   --shadow-1: 0 4px 12px rgba(0,0,0,.08);
   --shadow-2: 0 6px 20px rgba(0,0,0,.12);

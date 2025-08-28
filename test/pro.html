@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SneakerHub — ร้านรองเท้าออนไลน์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* =========================================
+       SneakerHub — Modern Frontend (TH)
+       - Clean corporate look
+       - Light/Dark theme toggle
+       - Responsive grid
+       - Skeleton loading
+       ========================================= */
+
+    :root{
+      --header-h: 72px;
+      --c-bg: #ffffff;
+      --c-card: #ffffff;
+      --c-text: #0f172a;        /* slate-900 */
+      --c-muted: #6b7280;       /* gray-500 */
+      --c-line: #e5e7eb;        /* gray-200 */
+      --c-accent: #1d4ed8;      /* blue-700 */
+      --c-accent-2: #0ea5e9;    /* sky-500 */
+      --c-success: #16a34a;
+      --c-danger: #dc2626;
+      --radius: 16px;
+      --shadow-1: 0 8px 24px rgba(2,6,23,.06);
+      --shadow-2: 0 16px 36px rgba(2,6,23,.12);
+      --focus: 0 0 0 3px rgba(29,78,216,.25);
+      --container-w: 1180px;
+    }
+    /* Dark theme */
+    .theme-dark{
+      --c-bg: #0b0c10;
+      --c-card: #111218;
+      --c-text: #e6ecf7;
+      --c-muted: #a8b3cf;
+      --c-line: #232634;
+      --c-accent: #3b82f6;
+      --c-accent-2: #22c55e;
+      --shadow-1: 0 8px 24px rgba(0,0,0,.25);
+      --shadow-2: 0 20px 48px rgba(0,0,0,.40);
+      background: linear-gradient(180deg,#0b0c10 0%,#0f1117 100%);
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0; background: var(--c-bg); color: var(--c-text);
+      font-family:'Prompt', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+    a{ color:inherit; text-decoration:none; }
+    img{ display:block; max-width:100%; height:auto; border-radius: 12px; }
+    button{ font-family: inherit; }
+
+    .container{ max-width: var(--container-w); margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    .header{
+      position: sticky; top:0; z-index: 1000; height: var(--header-h);
+      backdrop-filter: saturate(180%) blur(12px);
+      background: color-mix(in srgb, var(--c-bg) 82%, transparent);
+      border-bottom: 1px solid var(--c-line);
+    }
+    .header-inner{
+      height: 100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .logo{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:22px; }
+    .logo .dot{ color: var(--c-accent); }
+
+    .nav{ display:flex; align-items:center; gap: 14px; }
+    .nav a{ padding:10px 12px; border-radius: 10px; color: var(--c-muted); }
+    .nav a:hover{ color: var(--c-text); background: var(--c-line); }
+
+    .actions{ display:flex; align-items:center; gap:8px; }
+    .btn{ padding:10px 14px; border-radius: 12px; border:1px solid var(--c-line);
+      background: var(--c-card); color: var(--c-text); box-shadow: var(--shadow-1); cursor:pointer;
+    }
+    .btn:hover{ box-shadow: var(--shadow-2); }
+    .btn-primary{ background: linear-gradient(135deg, var(--c-accent), var(--c-accent-2)); border:0; color:#fff; }
+    .icon-btn{ width:42px; height:42px; display:grid; place-items:center; border-radius: 12px; }
+
+    /* Hero */
+    .hero{ margin-top: 8px; }
+    .hero-grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap:20px; }
+    .hero-card{ position:relative; background: var(--c-card); border:1px solid var(--c-line); border-radius: 20px; padding: 24px; overflow:hidden; box-shadow: var(--shadow-1); }
+    .hero .title{ font-size: 34px; line-height: 1.2; margin: 6px 0 12px; }
+    .hero .subtitle{ color: var(--c-muted); }
+    .hero .badge{ position:absolute; top:16px; right:16px; background: #111827; color:#fff; padding:6px 10px; border-radius: 999px; font-size: 12px; letter-spacing:.4px; opacity:.9; }
+    .hero .badge.light{ background: var(--c-accent); }
+
+    .searchbar{ margin-top: 18px; display:flex; gap:10px; }
+    .input{ flex:1; display:flex; align-items:center; gap:10px; background: var(--c-bg); border:1px solid var(--c-line); border-radius: 12px; padding:10px 12px; }
+    .input input{ flex:1; font-size: 15px; border:0; outline: none; background: transparent; color: var(--c-text); }
+
+    /* Promo carousel */
+    .promo-strip{ margin: 28px 0; overflow: hidden; }
+    .promo-list{ display:flex; gap:16px; overflow-x:auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+    .promo{ min-width: 280px; scroll-snap-align: start; background: var(--c-card); border:1px solid var(--c-line); border-radius: 16px; padding:16px; box-shadow: var(--shadow-1); position: relative; }
+    .promo .badge{ position:absolute; top:10px; left:10px; font-size: 12px; background: #111827; color:#fff; padding:3px 8px; border-radius: 999px; }
+    .promo .time{ color: var(--c-muted); font-size: 13px; margin-top: 6px; }
+
+    /* Section */
+    .section{ margin: 28px 0 18px; display:flex; align-items:center; justify-content:space-between; }
+    .section h2{ font-size: 22px; }
+    .section .more{ color: var(--c-accent); }
+
+    /* Product grid */
+    .grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    @media (max-width: 1024px){ .grid{ grid-template-columns: repeat(3,1fr);} .hero-grid{ grid-template-columns: 1fr; } }
+    @media (max-width: 720px){ .grid{ grid-template-columns: repeat(2,1fr);} .nav{display:none;} }
+    @media (max-width: 420px){ .grid{ grid-template-columns: 1fr;} }
+
+    .card{ background: var(--c-card); border:1px solid var(--c-line); border-radius: 16px; box-shadow: var(--shadow-1); overflow:hidden; display:flex; flex-direction:column; }
+    .card-media{ aspect-ratio: 4/3; background: linear-gradient(180deg, var(--c-line), transparent); }
+    .card-body{ padding:12px 14px; display:flex; flex-direction:column; gap:6px; }
+    .card .name{ font-weight:600; line-height: 1.3; }
+    .price{ font-weight:700; }
+    .muted{ color: var(--c-muted); font-size: 13px; }
+    .pill{ background: color-mix(in srgb, var(--c-accent) 16%, transparent); color: var(--c-accent); font-size: 12px; padding:4px 8px; border-radius: 999px; }
+
+    .card-actions{ display:flex; gap:8px; padding: 0 14px 14px; }
+    .btn-add{ flex:1; }
+
+    /* Skeleton */
+    .skeleton{ background: linear-gradient(90deg, var(--c-line) 25%, color-mix(in srgb, var(--c-line) 60%, transparent) 50%, var(--c-line) 75%);
+      background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 12px; }
+    @keyframes shimmer{ 0%{background-position: 200% 0;} 100%{ background-position: -200% 0; } }
+
+    /* Footer */
+    .footer{ margin: 40px 0; color: var(--c-muted); border-top: 1px solid var(--c-line); padding-top: 18px; }
+
+    /* Toast */
+    .toast{ position: fixed; right:18px; bottom:18px; z-index: 2000; display:flex; gap:10px; align-items:center; background: var(--c-card); color: var(--c-text);
+      border: 1px solid var(--c-line); border-radius: 14px; padding: 10px 14px; box-shadow: var(--shadow-2); transform: translateY(20px); opacity: 0; pointer-events:none; transition:.25s ease; }
+    .toast.show{ transform: translateY(0); opacity: 1; pointer-events:auto; }
+  </style>
+</head>
+
+<body>
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo">
+        <span class="fa-solid fa-shoe-prints"></span>
+        <a href="/" aria-label="หน้าแรก SneakerHub">Sneaker<span class="dot">Hub</span></a>
+      </div>
+      <nav class="nav">
+        <a href="#popular">รุ่นยอดนิยม</a>
+        <a href="#recommended">สินค้าแนะนำ</a>
+        <a href="#all">สินค้าทั้งหมด</a>
+        <a href="#promos">โปรโมชั่น</a>
+      </nav>
+      <div class="actions">
+        <button id="theme-toggle" class="icon-btn btn" title="Theme"><i class="fa-solid fa-moon"></i></button>
+        <button class="icon-btn btn" title="Cart"><i class="fa-solid fa-cart-shopping"></i></button>
+        <button class="btn btn-primary" onclick="alert('Login…')">เข้าสู่ระบบ</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero container">
+    <div class="hero-grid">
+      <div class="hero-card">
+        <div class="badge">NEW</div>
+        <h1 class="title">รองเท้ารุ่นใหม่ • วิ่ง เบา ระบายอากาศดี</h1>
+        <p class="subtitle">ค้นหารุ่นที่ใช่สำหรับคุณ ด้วยระบบค้นหาแบบ Real-time และตัวกรองอัจฉริยะ</p>
+        <div class="searchbar">
+          <div class="input">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="search" placeholder="ค้นหาสินค้า / รุ่น / แบรนด์" />
+          </div>
+          <button id="btn-search" class="btn">ค้นหา</button>
+          <button id="btn-clear" class="btn" title="ล้างตัวกรอง"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="badge light">PROMO</div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:center;">
+          <img src="/img/hero-shoe.png" alt="Hero" onerror="this.style.display='none'">
+          <div>
+            <h3 style="margin:0 0 6px">ส่วนลดพิเศษสำหรับสมาชิก</h3>
+            <p class="muted">สมัครสมาชิกวันนี้ รับคูปองลดเพิ่ม</p>
+            <button class="btn btn-primary" onclick="window.scrollTo({top:document.getElementById('promos').offsetTop - 60, behavior:'smooth'})">ดูโปรโมชัน</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Promotions ===== -->
+  <section id="promos" class="container promo-strip">
+    <div class="section"><h2>โปรโมชั่น</h2><a class="more" href="#">ดูทั้งหมด</a></div>
+    <div id="promo-list" class="promo-list"></div>
+  </section>
+
+  <!-- ===== Popular ===== -->
+  <section id="popular" class="container">
+    <div class="section"><h2>รุ่นยอดนิยม</h2></div>
+    <div id="grid-popular" class="grid"></div>
+  </section>
+
+  <!-- ===== Recommended ===== -->
+  <section id="recommended" class="container">
+    <div class="section"><h2>สินค้าแนะนำ</h2></div>
+    <div id="grid-reco" class="grid"></div>
+  </section>
+
+  <!-- ===== All Products ===== -->
+  <section id="all" class="container">
+    <div class="section"><h2>สินค้าทั้งหมด</h2></div>
+    <div id="grid-all" class="grid"></div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="container footer">
+    <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;">
+      <div>© <span id="y"></span> SneakerHub. All rights reserved.</div>
+      <div class="muted">ติดต่อเรา • นโยบายความเป็นส่วนตัว • เงื่อนไขการใช้บริการ</div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast"><i class="fa-solid fa-circle-check" style="color:var(--c-success)"></i><span id="toast-text">เพิ่มลงตะกร้าแล้ว</span></div>
+
+  <script>
+    // ========================= ENV & Helpers =========================
+    const ENV = { api: ('http://localhost:8080')}; // กำหนดจากไฟล์ env ภายนอกได้
+    const API = ENV.api || '';
+    const THB = n => `฿${Number(n||0).toLocaleString('th-TH')}`;
+    const qs = (s, el=document) => el.querySelector(s);
+    const qsa = (s, el=document) => [...el.querySelectorAll(s)];
+
+    function joinURL(base, path){
+      if (!path) return '/img/products/box.png';
+      if (/^https?:\/\//i.test(path)) return path;
+      const b = String(base||'').replace(/\/+$/,'');
+      const p = String(path||'').startsWith('/') ? path : '/'+path;
+      return b + p;
+    }
+
+    async function apiJSON(url, opts={}){
+      const res = await fetch(url, opts);
+      if (!res.ok){
+        let msg = '';
+        try { msg = await res.text(); } catch { msg = res.statusText; }
+        throw new Error(`${res.status} ${res.statusText} — ${msg}`);
+      }
+      const ct = res.headers.get('content-type')||'';
+      return ct.includes('application/json') ? res.json() : null;
+    }
+
+    function toast(msg){
+      const t = qs('#toast'); qs('#toast-text').textContent = msg||'บันทึกสำเร็จ';
+      t.classList.add('show');
+      setTimeout(()=> t.classList.remove('show'), 1800);
+    }
+
+    function makeSkeletonCards(target, count=8){
+      const frag = document.createDocumentFragment();
+      for(let i=0;i<count;i++){
+        const c = document.createElement('div'); c.className='card';
+        c.innerHTML = `<div class="card-media skeleton"></div>
+          <div class="card-body">
+            <div class="skeleton" style="height:18px; width:70%"></div>
+            <div class="skeleton" style="height:14px; width:40%; margin-top:8px"></div>
+          </div>
+          <div class="card-actions" style="padding-bottom:16px">
+            <div class="skeleton" style="height:40px; width:100%; border-radius:12px"></div>
+          </div>`;
+        frag.appendChild(c);
+      }
+      target.innerHTML = ''; target.appendChild(frag);
+    }
+
+    // ========================= Renderers =========================
+    function productCard(p){
+      const img = joinURL(API, p.image || p.img || p.thumbnail);
+      const badge = p.badge || p.brand || '';
+      return `<div class="card">
+        <div class="card-media"><img src="${img}" alt="${p.name||'product'}" onerror="this.src='/img/products/box.png'"/></div>
+        <div class="card-body">
+          <div class="name">${p.name||'-'}</div>
+          <div class="muted">${badge}</div>
+          <div class="price">${THB(p.sell_price || p.price || 0)}</div>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-add" onclick='addToCart(${JSON.stringify({id:p.product_id||p.id,name:p.name,price:p.sell_price||p.price,image:p.image})})'>เพิ่มลงตะกร้า</button>
+          <button class="btn icon-btn" title="รายละเอียด" onclick='quickView(${JSON.stringify(p)})'><i class="fa-regular fa-eye"></i></button>
+        </div>
+      </div>`;
+    }
+
+    function promoCard(x){
+      const badge = x.badge_text || 'PROMO';
+      const start = x.start_at ? new Date(x.start_at) : null;
+      const end = x.end_at ? new Date(x.end_at) : null;
+      const range = (start && end) ? `${start.toLocaleDateString('th-TH')} – ${end.toLocaleDateString('th-TH')}` : '';
+      return `<div class="promo">
+        <div class="badge">${badge}</div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div>
+            <div style="font-weight:700">${x.title||'-'}</div>
+            <div class="muted" style="margin-top:4px">${x.description||''}</div>
+            <div class="time">${range}</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    // ========================= Data Flow =========================
+    const els = {
+      promos : qs('#promo-list'),
+      popular: qs('#grid-popular'),
+      reco   : qs('#grid-reco'),
+      all    : qs('#grid-all'),
+      search : qs('#search'),
+      y      : qs('#y'),
+    };
+
+    async function loadPromotions(){
+      makeSkeletonCards(els.promos, 4);
+      try{
+        const list = await apiJSON(joinURL(API, '/api/promotions')) || [];
+        els.promos.innerHTML = list.map(promoCard).join('');
+      }catch(e){ els.promos.innerHTML = `<div class="muted">โหลดโปรโมชั่นไม่สำเร็จ</div>`; }
+    }
+
+    async function loadPopular(){
+      makeSkeletonCards(els.popular, 8);
+      try{
+        const list = await apiJSON(joinURL(API, '/api/products/popular')) || [];
+        els.popular.innerHTML = list.map(productCard).join('');
+      }catch(e){ els.popular.innerHTML = `<div class="muted">โหลดรุ่นยอดนิยมไม่สำเร็จ</div>`; }
+    }
+
+    async function loadRecommended(){
+      makeSkeletonCards(els.reco, 8);
+      try{
+        const list = await apiJSON(joinURL(API, '/api/products/recommended')) || [];
+        els.reco.innerHTML = list.map(productCard).join('');
+      }catch(e){ els.reco.innerHTML = `<div class="muted">โหลดสินค้าแนะนำไม่สำเร็จ</div>`; }
+    }
+
+    async function loadAll(q){
+      makeSkeletonCards(els.all, 12);
+      try{
+        const url = new URL(joinURL(API, '/api/products'), location.origin);
+        if(q) url.searchParams.set('search', q);
+        const list = await apiJSON(url.toString().replace(location.origin, '')) || [];
+        els.all.innerHTML = list.map(productCard).join('');
+      }catch(e){ els.all.innerHTML = `<div class="muted">โหลดสินค้าทั้งหมดไม่สำเร็จ</div>`; }
+    }
+
+    // ========================= Cart (Minimal) =========================
+    const CART_KEY = 'cart';
+    let cart = JSON.parse(localStorage.getItem(CART_KEY)||'[]');
+    function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+    function addToCart(p){
+      const idx = cart.findIndex(x=> String(x.id)===String(p.id));
+      if(idx>-1) cart[idx].qty = (cart[idx].qty||1)+1; else cart.push({id:p.id, name:p.name, price:p.price, image:p.image, qty:1});
+      saveCart(); toast('เพิ่มลงตะกร้าแล้ว');
+    }
+    function quickView(p){ alert(`รายละเอียดสินค้า\n\n${p.name || ''}`); }
+
+    // ========================= Search & Theme =========================
+    function doSearch(){ const q = els.search.value.trim(); loadAll(q); }
+    qs('#btn-search').addEventListener('click', doSearch);
+    qs('#btn-clear').addEventListener('click', ()=>{ els.search.value=''; loadAll(); });
+    els.search.addEventListener('keydown', e=>{ if(e.key==='Enter') doSearch(); });
+
+    const themeBtn = qs('#theme-toggle');
+    function applyTheme(){
+      const mode = localStorage.getItem('theme') || 'light';
+      document.body.classList.toggle('theme-dark', mode==='dark');
+      themeBtn.innerHTML = `<i class="fa-solid ${mode==='dark' ? 'fa-sun' : 'fa-moon'}"></i>`;
+    }
+    themeBtn.addEventListener('click', ()=>{
+      const mode = localStorage.getItem('theme')==='dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', mode); applyTheme();
+    });
+
+    // ========================= Init =========================
+    (function init(){
+      els.y.textContent = new Date().getFullYear();
+      applyTheme();
+      loadPromotions();
+      loadPopular();
+      loadRecommended();
+      loadAll();
+    })();
+  </script>
+</body>
+</html>

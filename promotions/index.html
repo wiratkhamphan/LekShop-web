@@ -75,37 +75,55 @@
   </section>
 
   <!-- Controls -->
-  <section class="promo-controls">
-    <div class="filters">
-      <select id="filter-brand">
-        <option value="">ทุกแบรนด์</option>
-      </select>
-
-      <select id="filter-category">
-        <option value="">ทุกประเภท</option>
-        <option>Running</option>
-        <option>Lifestyle</option>
-        <option>Basketball</option>
-        <option>Training</option>
-      </select>
-
-      <select id="filter-tags" multiple>
-        <option value="new">ใหม่ล่าสุด</option>
-        <option value="best">ขายดี</option>
-        <option value="clearance">เคลียร์สต๊อก</option>
-        <option value="member">สมาชิก</option>
-      </select>
-
-      <div class="price-range">
-        <label>ราคา: <span id="price-min-label">0</span> - <span id="price-max-label">10000</span> ฿</label>
-        <input type="range" id="price-min" min="0" max="10000" step="100" value="0" />
-        <input type="range" id="price-max" min="0" max="10000" step="100" value="10000" />
+  <section class="modern-controls">
+    <div class="promo-controls-header" style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
+      <span style="display:flex; align-items:center; justify-content:center; width:38px; height:38px; background:linear-gradient(135deg,#e3f0ff 60%,#fff 100%); border-radius:50%;"><i class="fa-solid fa-magnifying-glass" style="font-size:1.4em;color:#1976d2;"></i></span>
+      <div>
+        <h2 style="font-size:1.32em; font-weight:800; margin:0; color:#1976d2; letter-spacing:0.01em;">ค้นหาโปรโมชั่น</h2>
+        <div style="font-size:0.99em; color:#6b7280; margin-top:2px;">เลือกเงื่อนไขเพื่อค้นหาโปรที่ตรงใจคุณ</div>
       </div>
     </div>
-
-    <div class="sort-and-search">
-      <input id="search" type="search" placeholder="ค้นหาชื่อสินค้า/รหัสคูปอง..." />
-      <select id="sort">
+    <div class="filters-group" style="flex-wrap:wrap; gap:18px 32px; margin-bottom:10px;">
+      <div class="filter-item">
+        <label for="filter-brand"><i class="fa-solid fa-tags"></i> แบรนด์</label>
+        <select id="filter-brand">
+          <option value="">ทุกแบรนด์</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label for="filter-category"><i class="fa-solid fa-shoe-prints"></i> ประเภท</label>
+        <select id="filter-category">
+          <option value="">ทุกประเภท</option>
+          <option>Running</option>
+          <option>Lifestyle</option>
+          <option>Basketball</option>
+          <option>Training</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label for="filter-tags"><i class="fa-solid fa-star"></i> แท็ก</label>
+        <select id="filter-tags" multiple>
+          <option value="new">ใหม่ล่าสุด</option>
+          <option value="best">ขายดี</option>
+          <option value="clearance">เคลียร์สต๊อก</option>
+          <option value="member">สมาชิก</option>
+        </select>
+      </div>
+      <div class="filter-item price-range">
+        <label><i class="fa-solid fa-baht-sign"></i> ราคา: <span id="price-min-label">0</span> - <span id="price-max-label">10000</span> ฿</label>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="range" id="price-min" min="0" max="10000" step="100" value="0" />
+          <input type="range" id="price-max" min="0" max="10000" step="100" value="10000" />
+        </div>
+      </div>
+    </div>
+    <hr style="border:none; border-top:1.5px solid #e3eaf5; margin:0 0 18px 0;">
+    <div class="modern-sort-search" style="display:flex; gap:16px; align-items:center;">
+      <div style="position:relative; flex:1;">
+        <input id="search" type="search" placeholder="ค้นหาชื่อสินค้า/รหัสคูปอง..." style="padding-left:38px;" />
+        <i class="fa-solid fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#b6c3d1; font-size:1.1em;"></i>
+      </div>
+      <select id="sort" style="min-width:180px;">
         <option value="trending">เรียงตามความนิยม</option>
         <option value="discount">ส่วนลดมากสุด</option>
         <option value="ending">ใกล้หมดเขต</option>
@@ -129,7 +147,7 @@
 
   <!-- Load more -->
   <div class="promo-loadmore">
-    <button id="load-more" class="btn">โหลดเพิ่ม</button>
+    <button id="load-more" class="btn-accent">โหลดเพิ่ม</button>
   </div>
 </main>
 

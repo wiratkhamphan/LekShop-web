@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>หน้าจัดการสินค้า • Backoffice</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body{background:#f6f7fb}
+    .app-header{position:sticky;top:0;z-index:1030;background:#fff;border-bottom:1px solid #eef1f5}
+    .card{border-radius:14px;box-shadow:0 6px 18px rgba(2,6,23,.06);border:1px solid #eef1f5}
+    .table th{white-space:nowrap}
+    .table td{vertical-align:middle}
+    .thumb{width:60px;height:60px;object-fit:cover;border-radius:10px;border:1px solid #eee}
+    .btn-icon{padding:.35rem .55rem}
+    .filter-grid{gap:.5rem}
+    .badge-soft{background:#eef2ff;color:#1e3a8a}
+    .form-switch .form-check-input{cursor:pointer}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="app-header py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+      <h1 class="h4 mb-0"><i class="fa-solid fa-warehouse me-2"></i>จัดการสินค้า</h1>
+      <div class="d-flex gap-2 align-items-center">
+        <span id="auth-badge" class="badge text-bg-secondary d-none">ล็อกอินแล้ว</span>
+        <button class="btn btn-outline-secondary" id="btn-login"><i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบ</button>
+        <button class="btn btn-outline-secondary d-none" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> ออกจากระบบ</button>
+        <button class="btn btn-outline-secondary" id="btn-refresh"><i class="fa-solid fa-rotate"></i> รีเฟรช</button>
+        <button class="btn btn-primary" id="btn-add"><i class="fa-solid fa-plus"></i> เพิ่มสินค้า</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="container my-4">
+    <!-- Filters -->
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="row g-2 align-items-end filter-grid">
+          <div class="col-12 col-md-3">
+            <label class="form-label">ค้นหา</label>
+            <input type="text" class="form-control" id="q" placeholder="ชื่อสินค้า / ยี่ห้อ / หมวดหมู่" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label">แบรนด์</label>
+            <input type="text" class="form-control" id="brand" placeholder="Nike" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label">หมวดหมู่</label>
+            <input type="text" class="form-control" id="category" placeholder="Running" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label">เพศ</label>
+            <select class="form-select" id="gender">
+              <option value="">ทั้งหมด</option>
+              <option value="men">ผู้ชาย</option>
+              <option value="women">ผู้หญิง</option>
+              <option value="unisex">Unisex</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label">ราคา (ขั้นต่ำ/สูงสุด)</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="min_price" placeholder="0" />
+              <span class="input-group-text">-</span>
+              <input type="number" class="form-control" id="max_price" placeholder="5000" />
+            </div>
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label">จัดเรียง</label>
+            <select class="form-select" id="sort">
+              <option value="new">ล่าสุด</option>
+              <option value="name">ชื่อ (A→Z)</option>
+              <option value="price_asc">ราคาน้อย→มาก</option>
+              <option value="price_desc">ราคามาก→น้อย</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label">แนะนำ</label>
+            <select class="form-select" id="recommended">
+              <option value="">ทั้งหมด</option>
+              <option value="true">เฉพาะแนะนำ</option>
+              <option value="false">ไม่เป็นแนะนำ</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label">ยอดนิยม</label>
+            <select class="form-select" id="popular">
+              <option value="">ทั้งหมด</option>
+              <option value="true">เฉพาะยอดนิยม</option>
+              <option value="false">ไม่เป็นยอดนิยม</option>
+            </select>
+          </div>
+          <div class="col-4 col-md-2">
+            <label class="form-label">ต่อหน้า</label>
+            <select class="form-select" id="limit">
+              <option>12</option>
+              <option>24</option>
+              <option>36</option>
+              <option>60</option>
+            </select>
+          </div>
+          <div class="col-8 col-md-3 text-end ms-auto">
+            <button class="btn btn-primary" id="btn-search"><i class="fa-solid fa-magnifying-glass"></i> ค้นหา</button>
+            <button class="btn btn-outline-secondary" id="btn-clear">ล้าง</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped align-middle" id="tbl">
+            <thead>
+              <tr>
+                <th>รูป</th>
+                <th>รหัส</th>
+                <th>ชื่อสินค้า</th>
+                <th>แบรนด์</th>
+                <th>หมวด</th>
+                <th class="text-center">เพศ</th>
+                <th class="text-end">ราคา</th>
+                <th class="text-end">คงเหลือ</th>
+                <th class="text-center">แนะนำ</th>
+                <th class="text-center">ยอดนิยม</th>
+                <th class="text-end">อัปเดต</th>
+                <th class="text-end">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div class="d-flex align-items-center justify-content-between mt-3">
+          <div id="summary" class="text-muted small"></div>
+          <nav>
+            <ul class="pagination mb-0" id="pager"></ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add/Edit Modal (Upsert) -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <form id="formUpsert" enctype="multipart/form-data">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="fa-solid fa-box"></i> <span id="modalTitle">เพิ่มสินค้า</span></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-4 text-center">
+                <img id="imgPreview" class="thumb mb-2" src="/img/products/box.png" alt="preview" style="width:140px;height:140px"/>
+                <input class="form-control" type="file" id="image" name="image" accept="image/*" />
+              </div>
+              <div class="col-md-8">
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <label class="form-label">รหัสสินค้า *</label>
+                    <input class="form-control" name="product_id" id="product_id" required />
+                  </div>
+                  <div class="col-md-8">
+                    <label class="form-label">ชื่อสินค้า *</label>
+                    <input class="form-control" name="name" id="name" required />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">แบรนด์</label>
+                    <input class="form-control" name="brand" id="brand_i" />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">หมวดหมู่</label>
+                    <input class="form-control" name="category" id="category_i" />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">เพศ</label>
+                    <select class="form-select" name="gender" id="gender_i">
+                      <option value="">-</option>
+                      <option value="men">ผู้ชาย</option>
+                      <option value="women">ผู้หญิง</option>
+                      <option value="unisex">Unisex</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">จำนวน *</label>
+                    <input type="number" class="form-control" name="quantity" id="quantity" value="0" required />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">ทุน (cost)</label>
+                    <input type="number" step="0.01" class="form-control" name="cost_price" id="cost_price" value="0" />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">ราคาขาย *</label>
+                    <input type="number" step="0.01" class="form-control" name="sell_price" id="sell_price" value="0" required />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">ราคาป้าย (ไม่บังคับ)</label>
+                    <input type="number" step="0.01" class="form-control" name="original_price" id="original_price" />
+                  </div>
+                  <div class="col-md-4 d-flex align-items-center">
+                    <div class="form-check form-switch mt-4">
+                      <input class="form-check-input" type="checkbox" role="switch" id="recommended_i" name="recommended">
+                      <label class="form-check-label" for="recommended_i">แนะนำ</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึก</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  odal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <form id="formLogin">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="fa-solid fa-user-shield"></i> เข้าสู่ระบบแอดมิน</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input class="form-control" id="login_user" required />
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-control" id="login_pass" required />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+            <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Qty Modal -->
+  <div class="modal fade" id="qtyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <form id="formQty">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="fa-solid fa-cubes-stacked"></i> ปรับจำนวน</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="qty_product_id" />
+            <label class="form-label">จำนวนใหม่</label>
+            <input type="number" class="form-control" id="qty_value" required />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+            <button type="submit" class="btn btn-primary">บันทึก</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  // ====== ตั้งค่า API ======
+  const API = (window.ENV && ENV.api) || "http://localhost:8080"; // ปรับตามเครื่อง
+
+  // แผนผัง endpoints (ถ้าของจริงต่างจากนี้แก้ไขได้ง่าย)
+const PATHS = {
+// Public search
+search: "/api/products", // GET
+
+
+// Admin (protected by JWT)
+upsert: "/admin/product", // POST multipart (UPSERT)
+update: (id) => `/admin/product/${id}`, // PUT JSON (ไม่จำเป็นถ้าใช้ UPSERT)
+qty: (id) => `/admin/product/${id}/quantity`, // PATCH JSON
+rec: (id) => `/admin/product/${id}/recommended`, // PATCH JSON
+pop: (id) => `/admin/products/${id}/popular`, // PATCH JSON (ตาม route ปัจจุบัน)
+del: (id) => `/admin/product/${id}` // DELETE
+};
+  const els = {
+    tbody: document.getElementById('tbody'),
+    pager: document.getElementById('pager'),
+    summary: document.getElementById('summary'),
+    // filters
+    q: document.getElementById('q'),
+    brand: document.getElementById('brand'),
+    category: document.getElementById('category'),
+    gender: document.getElementById('gender'),
+    min_price: document.getElementById('min_price'),
+    max_price: document.getElementById('max_price'),
+    recommended: document.getElementById('recommended'),
+    popular: document.getElementById('popular'),
+    sort: document.getElementById('sort'),
+    limit: document.getElementById('limit'),
+    btnSearch: document.getElementById('btn-search'),
+    btnClear: document.getElementById('btn-clear'),
+    btnAdd: document.getElementById('btn-add'),
+    btnRefresh: document.getElementById('btn-refresh'),
+    authBadge: document.getElementById('auth-badge'),
+  };
+
+  // state
+  let state = { page: 1, limit: parseInt(els.limit.value || '12', 10), total_pages: 1, total: 0 };
+
+  // ===== Helpers =====
+  const TOKEN_KEY = 'admintoken';
+  const THB = n => `฿${Number(n||0).toLocaleString('th-TH', {maximumFractionDigits:2})}`;
+  const j = sel => document.querySelector(sel);
+  function toast(icon, title){ Swal.fire({toast:true,position:'top-end',showConfirmButton:false,timer:1500,icon,title}); }
+  function err(e){ console.error(e); Swal.fire({icon:'error',title:'เกิดข้อผิดพลาด',text: String(e?.message||e)}); }
+
+  const getToken = () => localStorage.getItem(TOKEN_KEY)||'';
+  const setToken = (t) => { localStorage.setItem(TOKEN_KEY, t||''); };
+
+  // API helpers
+  async function apiJSON(url, opts){
+    const res = await fetch(url, opts);
+    if(!res.ok) throw new Error(await res.text());
+    const json = await res.json();
+    return json;
+  }
+
+  function buildQuery(){
+    const kv = [];
+    function add(k, v){
+      if(v==null || v==='') return;
+      kv.push(`${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
+    }
+    add('page', state.page);
+    add('limit', state.limit);
+    add('q', els.q.value.trim());
+    add('brand', els.brand.value.trim());
+    add('category', els.category.value.trim());
+    add('gender', els.gender.value||'');
+    add('min_price', els.min_price.value);
+    add('max_price', els.max_price.value);
+    add('recommended', els.recommended.value);
+    add('popular', els.popular.value);
+    add('sort', els.sort.value);
+    return kv.join('&');
+  }
+
+  // Render
+  function renderRows(data){
+    els.tbody.innerHTML = data.map(p=>{
+      const img = p.image || '/img/products/box.png';
+      const brand = p.brand || '-';
+      const cat = p.category || '-';
+      const g = p.gender === 'unisex' ? 'ทุกเพศ' : (p.gender === 'men' ? 'ผู้ชาย' : 'ผู้หญิง');
+      const updated = new Date(p.updated_at).toLocaleString('th-TH', { hour12:false });
+      return `<tr>
+        <td><img class="thumb" src="${img}" alt="img"></td>
+        <td><span class="badge bg-dark">${p.product_id}</span></td>
+        <td>${p.name||'-'}</td>
+        <td>${brand}</td>
+        <td>${cat}</td>
+        <td class="text-center"><span class="badge badge-soft">${g}</span></td>
+        <td class="text-end">${THB(p.sell_price)}</td>
+        <td class="text-end">${p.quantity ?? 0}</td>
+        <td class="text-center">
+          <div class="form-check form-switch d-inline-block">
+            <input class="form-check-input" type="checkbox" ${p.recommended? 'checked':''} onchange="toggleRecommended('${p.product_id}', this.checked)">
+          </div>
+        </td>
+        <td class="text-center">
+          <div class="form-check form-switch d-inline-block">
+            <input class="form-check-input" type="checkbox" ${p.popular? 'checked':''} onchange="togglePopular('${p.product_id}', this.checked)">
+          </div>
+        </td>
+        <td class="text-end small text-muted">${updated}</td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button class="btn btn-sm btn-outline-secondary btn-icon" title="แก้ไข" onclick='openEdit(${JSON.stringify(p)})'><i class="fa-solid fa-pen"></i></button>
+            <button class="btn btn-sm btn-outline-primary btn-icon" title="ปรับจำนวน" onclick="openQty('${p.product_id}', ${p.quantity ?? 0})"><i class="fa-solid fa-cubes-stacked"></i></button>
+            <button class="btn btn-sm btn-outline-danger btn-icon" title="ลบ" onclick="delProduct('${p.product_id}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`
+    }).join('');
+  }
+
+  function renderPager(page, total_pages, total, limit){
+    els.summary.textContent = `หน้า ${page}/${total_pages} • ทั้งหมด ${total} ชิ้น`;
+    const ul = els.pager; ul.innerHTML = '';
+    function li(disabled, active, label, on){
+      const li = document.createElement('li');
+      li.className = `page-item ${disabled?'disabled':''} ${active?'active':''}`;
+      const a = document.createElement('a');
+      a.className = 'page-link'; a.href = '#'; a.textContent = label;
+      a.onclick = (e)=>{ e.preventDefault(); if(on) on(); };
+      li.appendChild(a); ul.appendChild(li);
+    }
+    li(page<=1,false,'«',()=>{ state.page=1; load(); });
+    li(page<=1,false,'‹',()=>{ state.page=Math.max(1,page-1); load(); });
+    // windowed pages
+    const start = Math.max(1, page-2), end = Math.min(total_pages, page+2);
+    for(let i=start;i<=end;i++){ li(false, i===page, String(i), ()=>{ state.page=i; load(); }); }
+    li(page>=total_pages,false,'›',()=>{ state.page=Math.min(total_pages,page+1); load(); });
+    li(page>=total_pages,false,'»',()=>{ state.page=total_pages; load(); });
+  }
+
+  async function load(){
+    try{
+      const qs = buildQuery();
+      const url = `${API}${PATHS.search}?${qs}`;
+      const data = await apiJSON(url);
+      state.page = data.page; state.limit = data.limit; state.total_pages = data.total_pages; state.total = data.total;
+      renderRows(data.items||[]);
+      renderPager(state.page, state.total_pages, state.total, state.limit);
+    }catch(e){ err(e); }
+  }
+
+  // ===== Actions =====
+  window.toggleRecommended = async (product_id, value)=>{
+    try{
+      await apiJSON(`${API}${PATHS.rec(product_id)}`, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({recommended: !!value})});
+      toast('success','อัปเดตแนะนำแล้ว');
+    }catch(e){ err(e); load(); }
+  }
+
+  window.togglePopular = async (product_id, value)=>{
+    try{
+      await apiJSON(`${API}${PATHS.pop(product_id)}`, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({popular: !!value})});
+      toast('success','อัปเดตยอดนิยมแล้ว');
+    }catch(e){ err(e); load(); }
+  }
+
+  window.delProduct = async (product_id)=>{
+    const res = await Swal.fire({icon:'warning', title:'ลบสินค้า?', text:`${product_id}`, showCancelButton:true, confirmButtonText:'ลบเลย', confirmButtonColor:'#d33'});
+    if(!res.isConfirmed) return;
+    try{
+      await apiJSON(`${API}${PATHS.del(product_id)}`, {method:'DELETE'});
+      toast('success','ลบสำเร็จ');
+      load();
+    }catch(e){ err(e); }
+  }
+
+  // ===== Modals =====
+  const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+  const qtyModal  = new bootstrap.Modal(document.getElementById('qtyModal'));
+
+  function resetUpsert(){
+    j('#modalTitle').textContent = 'เพิ่มสินค้า';
+    j('#formUpsert').reset();
+    j('#imgPreview').src = '/img/products/box.png';
+    j('#product_id').readOnly = false;
+  }
+
+  els.btnAdd.addEventListener('click', ()=>{ resetUpsert(); editModal.show(); });
+
+  window.openEdit = (p)=>{
+    resetUpsert();
+    j('#modalTitle').textContent = 'แก้ไขสินค้า';
+    j('#product_id').value = p.product_id||'';
+    j('#product_id').readOnly = true; // ป้องกันเปลี่ยนคีย์หลัก
+    j('#name').value = p.name||'';
+    j('#brand_i').value = p.brand || '';
+    j('#category_i').value = p.category || '';
+    j('#gender_i').value = p.gender || '';
+    j('#quantity').value = p.quantity ?? 0;
+    j('#cost_price').value = p.cost_price ?? 0;
+    j('#sell_price').value = p.sell_price ?? 0;
+    j('#original_price').value = p.original_price ?? '';
+    j('#recommended_i').checked = !!p.recommended;
+    j('#imgPreview').src = p.image || '/img/products/box.png';
+    editModal.show();
+  }
+
+  // live preview image
+  j('#image').addEventListener('change', (e)=>{
+    const file = e.target.files?.[0];
+    if(file){ j('#imgPreview').src = URL.createObjectURL(file); }
+  });
+
+  // upsert (POST /products - UPSERT)
+  j('#formUpsert').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    try{
+      const fd = new FormData(e.target);
+      fd.set('recommended', j('#recommended_i').checked ? 'true' : 'false');
+      const url = `${API}${PATHS.upsert}`;
+      const headers = {};
+      if (isAdminURL(url)) {
+        const token = getToken(); if(!token) throw new Error('missing token');
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const res = await fetch(url, { method:'POST', headers, body: fd });
+      if(!res.ok){ throw new Error(await res.text()); }
+      toast('success','บันทึกสำเร็จ');
+      const active = document.activeElement; if(active && active.blur) active.blur();
+      editModal.hide();
+      load();
+    }catch(errMsg){ err(errMsg); }
+  });
+
+  window.openQty = (product_id, qty)=>{
+    j('#qty_product_id').value = product_id;
+    j('#qty_value').value = qty ?? 0;
+    qtyModal.show();
+  }
+
+  j('#formQty').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    try{
+      const id = j('#qty_product_id').value; const q = parseInt(j('#qty_value').value,10)||0;
+      await apiJSON(`${API}${PATHS.qty(id)}`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({quantity: q})});
+      toast('success','อัปเดตจำนวนแล้ว');
+      qtyModal.hide();
+      load();
+    }catch(e){ err(e); }
+  });
+
+  // Filter actions
+  els.btnSearch.addEventListener('click', ()=>{ state.page=1; load(); });
+  els.btnRefresh.addEventListener('click', ()=> load());
+  els.btnClear.addEventListener('click', ()=>{
+    ['q','brand','category','min_price','max_price'].forEach(id=>els[id].value='');
+    els.gender.value=''; els.recommended.value=''; els.popular.value=''; els.sort.value='new';
+    state.page=1; load();
+  });
+  els.limit.addEventListener('change', ()=>{ state.page=1; load(); });
+
+  // Admin login/logout
+  const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+  const isAdminURL = (url) => url.startsWith(API) && url.includes('/Admin/');
+  els.btnLogin.addEventListener('click', ()=>{ loginModal.show(); });
+  els.btnLogout.addEventListener('click', ()=>{
+      setToken('');
+      els.btnLogin.classList.remove('d-none');
+      els.btnLogout.classList.add('d-none');
+      els.authBadge.classList.add('d-none');
+      toast('info','ออกจากระบบแล้ว');
+  });
+  
+  // login form
+  j('#formLogin').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      try{
+        const user = j('#login_user').value.trim();
+        const pass = j('#login_pass').value;
+        if(!user || !pass) throw new Error('กรุณากรอกข้อมูลให้ครบ');
+        const body = JSON.stringify({ username: user, password: pass });
+        const res = await fetch(`${API}/Login`, { method:'POST', headers:{'Content-Type':'application/json'}, body });
+      if(!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      const token = data.token || data.access_token || '';
+      if(!token) throw new Error('missing token in response');
+      setToken(token);
+      loginModal.hide();
+      toast('success','เข้าสู่ระบบสำเร็จ');
+    }catch(e){ err(e); }
+  });
+
+  // Enter press to search
+  ['q','brand','category','min_price','max_price'].forEach(id=>{
+    els[id].addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); state.page=1; load(); }});
+  });
+
+  // Init
+  load();
+  </script>
+</body>
+</html>
