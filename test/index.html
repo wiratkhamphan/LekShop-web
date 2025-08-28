@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SneakerHub Admin</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Bootstrap & SweetAlert2 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <i class="fa-solid fa-shield"></i>
+        <span>Admin</span>
+      </div>
+      <div class="user">
+        <i class="fa-solid fa-user-shield"></i>
+        <div>
+          <div id="u-name">—</div>
+          <div class="muted" id="u-role">Admin</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#dashboard" data-page="dashboard" class="active">
+          <i class="fa-solid fa-gauge"></i>
+          <span>แดชบอร์ด</span>
+        </a>
+        <a href="#products" data-page="products">
+          <i class="fa-solid fa-box"></i>
+          <span>สินค้า</span>
+        </a>
+        <a href="#promotions" data-page="promotions">
+          <i class="fa-solid fa-tags"></i>
+          <span>โปรโมชัน</span>
+        </a>
+        <a href="#promo-items" data-page="promo-items">
+          <i class="fa-solid fa-badge-percent"></i>
+          <span>สินค้าในโปรฯ</span>
+        </a>
+        <a href="#logout" id="btn-logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>ออกจากระบบ</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="header between">
+        <h2 id="page-title">แดชบอร์ด</h2>
+        <div class="toolbar">
+          <button class="btn icon" id="btn-refresh" title="รีเฟรช"><i class="fa-solid fa-rotate"></i></button>
+          <button class="btn icon" id="btn-theme" title="ธีม"><i class="fa-solid fa-sun"></i></button>
+        </div>
+      </div>
+
+      <!-- Dashboard -->
+      <section id="page-dashboard">
+        <div class="cards">
+          <div class="card"><h3>สินค้าทั้งหมด</h3><div class="muted" id="m-products">—</div></div>
+          <div class="card"><h3>โปรโมชันที่ใช้งาน</h3><div class="muted" id="m-promos">—</div></div>
+          <div class="card"><h3>สินค้าติดโปรฯ</h3><div class="muted" id="m-promo-items">—</div></div>
+          <div class="card"><h3>อัปเดตล่าสุด</h3><div class="muted" id="m-last">—</div></div>
+        </div>
+
+        <div class="panel">
+          <h3>Quick Actions</h3>
+          <div class="flex">
+            <button class="btn primary" id="qa-add-product"><i class="fa-solid fa-plus"></i> เพิ่มสินค้า</button>
+            <button class="btn" id="qa-add-promo"><i class="fa-solid fa-plus"></i> สร้างโปรโมชัน</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Products (Bootstrap version) -->
+      <section id="page-products" style="display:none">
+        <!-- Filters -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row g-2 align-items-end">
+              <div class="col-12 col-md-3">
+                <label class="form-label">ค้นหา</label>
+                <input type="text" class="form-control" id="p_q" placeholder="ชื่อ / ยี่ห้อ / หมวดหมู่" />
+              </div>
+              <div class="col-6 col-md-2">
+                <label class="form-label">แบรนด์</label>
+                <input type="text" class="form-control" id="p_brand" placeholder="Nike" />
+              </div>
+              <div class="col-6 col-md-2">
+                <label class="form-label">หมวดหมู่</label>
+                <input type="text" class="form-control" id="p_category" placeholder="Running" />
+              </div>
+              <div class="col-6 col-md-2">
+                <label class="form-label">เพศ</label>
+                <select class="form-select" id="p_gender">
+                  <option value="">ทั้งหมด</option>
+                  <option value="men">ผู้ชาย</option>
+                  <option value="women">ผู้หญิง</option>
+                  <option value="unisex">Unisex</option>
+                </select>
+              </div>
+              <div class="col-6 col-md-3">
+                <label class="form-label">ราคา (ขั้นต่ำ/สูงสุด)</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" id="p_min" placeholder="0" />
+                  <span class="input-group-text">-</span>
+                  <input type="number" class="form-control" id="p_max" placeholder="5000" />
+                </div>
+              </div>
+              <div class="col-6 col-md-2">
+                <label class="form-label">จัดเรียง</label>
+                <select class="form-select" id="p_sort">
+                  <option value="new">ล่าสุด</option>
+                  <option value="name">ชื่อ (A→Z)</option>
+                  <option value="price_asc">ราคาน้อย→มาก</option>
+                  <option value="price_desc">ราคามาก→น้อย</option>
+                </select>
+              </div>
+              <div class="col-6 col-md-2">
+                <label class="form-label">แนะนำ</label>
+                <select class="form-select" id="p_recommended">
+                  <option value="">ทั้งหมด</option>
+                  <option value="true">เฉพาะแนะนำ</option>
+                  <option value="false">ไม่เป็นแนะนำ</option>
+                </select>
+              </div>
+              <div class="col-6 col-md-2">
+                <label class="form-label">ยอดนิยม</label>
+                <select class="form-select" id="p_popular">
+                  <option value="">ทั้งหมด</option>
+                  <option value="true">เฉพาะยอดนิยม</option>
+                  <option value="false">ไม่เป็นยอดนิยม</option>
+                </select>
+              </div>
+              <div class="col-4 col-md-2">
+                <label class="form-label">ต่อหน้า</label>
+                <select class="form-select" id="p_limit">
+                  <option>12</option><option>24</option><option>36</option><option>60</option>
+                </select>
+              </div>
+              <div class="col-8 col-md-3 text-end ms-auto">
+                <button class="btn btn-primary" id="p_btn_search"><i class="fa-solid fa-magnifying-glass"></i> ค้นหา</button>
+                <button class="btn btn-outline-secondary" id="p_btn_clear">ล้าง</button>
+                <button class="btn btn-success" id="p_btn_add"><i class="fa-solid fa-plus"></i> เพิ่มสินค้า</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped align-middle" id="p_tbl">
+                <thead>
+                  <tr>
+                    <th>รูป</th>
+                    <th>รหัส</th>
+                    <th>ชื่อสินค้า</th>
+                    <th>แบรนด์</th>
+                    <th>หมวด</th>
+                    <th class="text-center">เพศ</th>
+                    <th class="text-end">ราคา</th>
+                    <th class="text-end">คงเหลือ</th>
+                    <th class="text-center">แนะนำ</th>
+                    <th class="text-center">ยอดนิยม</th>
+                    <th class="text-end">อัปเดต</th>
+                    <th class="text-end">จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody id="p_tbody"></tbody>
+              </table>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mt-3">
+              <div id="p_summary" class="text-muted small"></div>
+              <nav><ul class="pagination mb-0" id="p_pager"></ul></nav>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal: Add/Edit -->
+        <div class="modal fade" id="p_editModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <form id="p_formUpsert" enctype="multipart/form-data">
+                <div class="modal-header">
+                  <h5 class="modal-title"><i class="fa-solid fa-box"></i> <span id="p_modalTitle">เพิ่มสินค้า</span></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="row g-3">
+                    <div class="col-md-4 text-center">
+                      <img id="p_imgPreview" class="thumb mb-2" src="/img/products/box.png" alt="preview" style="width:140px;height:140px"/>
+                      <input class="form-control" type="file" id="p_image" name="image" accept="image/*" />
+                    </div>
+                    <div class="col-md-8">
+                      <div class="row g-3">
+                        <div class="col-md-4">
+                          <label class="form-label">รหัสสินค้า *</label>
+                          <input class="form-control" name="product_id" id="p_product_id" required />
+                        </div>
+                        <div class="col-md-8">
+                          <label class="form-label">ชื่อสินค้า *</label>
+                          <input class="form-control" name="name" id="p_name" required />
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">แบรนด์</label>
+                          <input class="form-control" name="brand" id="p_brand_i" />
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">หมวดหมู่</label>
+                          <input class="form-control" name="category" id="p_category_i" />
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">เพศ</label>
+                          <select class="form-select" name="gender" id="p_gender_i">
+                            <option value="">-</option>
+                            <option value="men">ผู้ชาย</option>
+                            <option value="women">ผู้หญิง</option>
+                            <option value="unisex">Unisex</option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">จำนวน *</label>
+                          <input type="number" class="form-control" name="quantity" id="p_quantity" value="0" required />
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">ทุน (cost)</label>
+                          <input type="number" step="0.01" class="form-control" name="cost_price" id="p_cost_price" value="0" />
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">ราคาขาย *</label>
+                          <input type="number" step="0.01" class="form-control" name="sell_price" id="p_sell_price" value="0" required />
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">ราคาป้าย</label>
+                          <input type="number" step="0.01" class="form-control" name="original_price" id="p_original_price" />
+                        </div>
+                        <div class="col-md-4 d-flex align-items-center">
+                          <div class="form-check form-switch mt-4">
+                            <input class="form-check-input" type="checkbox" role="switch" id="p_recommended_i" name="recommended">
+                            <label class="form-check-label" for="p_recommended_i">แนะนำ</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                  <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> บันทึก</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal: Qty -->
+        <div class="modal fade" id="p_qtyModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+              <form id="p_formQty">
+                <div class="modal-header">
+                  <h5 class="modal-title"><i class="fa-solid fa-cubes-stacked"></i> ปรับจำนวน</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <input type="hidden" id="p_qty_product_id" />
+                  <label class="form-label">จำนวนใหม่</label>
+                  <input type="number" class="form-control" id="p_qty_value" required />
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                  <button type="submit" class="btn btn-primary">บันทึก</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Promotions -->
+      <section id="page-promotions" style="display:none">
+        <div class="panel between">
+          <h3>โปรโมชัน</h3>
+          <div class="flex">
+            <button class="btn primary" id="btn-add-promo"><i class="fa-solid fa-plus"></i> เพิ่มโปรโมชัน</button>
+          </div>
+        </div>
+        <div class="panel">
+          <table class="table" id="tbl-promos">
+            <thead><tr><th>#</th><th>ชื่อโปรฯ</th><th>ช่วงเวลา</th><th>สถานะ</th><th style="width:140px">จัดการ</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Promotion Items -->
+      <section id="page-promo-items" style="display:none">
+        <div class="panel">
+          <h3>เพิ่มสินค้าเข้าโปรโมชัน</h3>
+          <div class="grid-2">
+            <div class="input">
+              <label>เลือกโปรโมชัน</label>
+              <select id="sel-promo"></select>
+              <div class="hint">จะเพิ่มรายการเข้าโปรโมชันที่เลือก</div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>เพิ่มรายการ (Batch)</h3>
+          <div class="grid-2">
+            <div class="input">
+              <label>รายการสินค้า (JSON)</label>
+              <textarea id="ti-json" rows="8" placeholder='[
+  {"product_id":"SKU001","discount_percent":15},
+  {"product_id":"SKU002","discount_amount":200},
+  {"product_id":"SKU003","special_price":1890}
+]'></textarea>
+              <div class="hint">ฟิลด์ที่รองรับ: product_id, discount_percent, discount_amount, special_price</div>
+            </div>
+            <div class="input">
+              <label>&nbsp;</label>
+              <button class="btn primary" id="btn-send-promo-items"><i class="fa-solid fa-paper-plane"></i> ส่งรายการ</button>
+              <button class="btn" id="btn-fill-sample">ใส่ตัวอย่าง</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"><i class="fa-solid fa-circle-check" style="color:var(--c-green)"></i><span id="toast-text">บันทึกสำเร็จ</span></div>
+
+  <!-- Bootstrap bundle & App script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="/account/env/env.js"></script>
+  <script defer src="app.js"></script>
+</body>
+</html>

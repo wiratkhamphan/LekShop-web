@@ -1,6 +1,6 @@
 
   // ---------- 1) Popular 
-  async function fetchPopular({ url = `${API_BASE}/hero-slider`, limit = 12 } = {}) {
+  async function fetchPopular({ url = `${API_BASE}/popular`, limit = 12 } = {}) {
     const track = document.querySelector('.carousel2-track');
     const dots  = document.querySelector('.carousel2-dots');
     if (!track) return;
@@ -24,7 +24,7 @@
 
       track.innerHTML = (items||[]).map((p,i)=>`
         <article class="carousel2-item" role="option" aria-label="${i+1} จาก ${items.length}">
-          <img src="${safeText(p.image || '/img/products/box.png')}" alt="${safeText(p.title || p.name || 'รุ่นยอดนิยม')}">
+          <img src="${API_BASE}${safeText(p.image || '/img/products/box.png')}" alt="${safeText(p.title || p.name || 'รุ่นยอดนิยม')}">
           <div class="item-body">
             <h3>${safeText(p.title || p.name || 'รุ่นยอดนิยม')}</h3>
             <p class="price">${THB(p.price || p.sell_price || 0)}</p>
@@ -100,8 +100,12 @@
     }
   }
 
+  
+
   // ---------- init ----------
   document.addEventListener('DOMContentLoaded', () => {
-    fetchPopular();     // ดึงสไลด์ Popular จาก /hero-slider
+    fetchPopular();     // ดึงสไลด์ Popular จาก /popular
     fetchFeatured();    // ดึงสินค้าแนะนำจาก /products/recommended
   });
+
+

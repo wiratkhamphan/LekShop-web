@@ -1,10 +1,8 @@
 // ===== Config & Utils =====
-const API_BASE = window.ENV?.api || ""; // จาก /account/env/env.js ถ้ามี
 const CART_KEY = "cart";
 const FALLBACK_IMG = "/img/products/box.png";
 const PAGE_SIZE = 8;
 
-const THB = (n) => `฿${Number(n || 0).toLocaleString("th-TH")}`;
 const fmtDate = (d) => new Date(d).toLocaleDateString("th-TH", { day: "2-digit", month: "short", year: "numeric" });
 
 let state = {

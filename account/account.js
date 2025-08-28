@@ -1,8 +1,7 @@
 // account.js — ข้อมูลลูกค้า (เวอร์ชันเสริมรายละเอียด + แข็งแรงขึ้น)
 
 // ===== CONFIG =====
-const BASE_URL = (window.ENV && ENV.api) ? ENV.api.replace(/\/+$/, "") : "";
-const API_CUSTOMER = (id) => (BASE_URL ? `${BASE_URL}/customers/${id}` : `/api/customers/${id}`);
+const API_CUSTOMER = (id) => (API_BASE ? `${API_BASE}/customers/${id}` : `/api/customers/${id}`);
 
 // ===== HELPERS =====
 const $ = (sel) => document.querySelector(sel);
@@ -12,7 +11,6 @@ const formatDateTH = (d) => {
   const dt = new Date(d);
   return isNaN(dt) ? d : dt.toLocaleDateString("th-TH", { year: "numeric", month: "short", day: "numeric" });
 };
-const THB = (n) => "฿" + Number(n || 0).toLocaleString("th-TH", { maximumFractionDigits: 0 });
 
 // ===== ELEMENTS =====
 const els = {
@@ -47,14 +45,15 @@ function logout() {
   localStorage.removeItem("token");
   window.location.href = "/";
 }
-window.logout = logout; // เผื่อเรียกจาก onclick
+window.logout = logout; 
 
 document.addEventListener("DOMContentLoaded", async () => {
   const id = localStorage.getItem("customer_id");
   const token = localStorage.getItem("token");
+  
 
   // ถ้าต้องการบังคับล็อกอิน ให้ uncomment 2 บรรทัดถัดไป
-  // if (!id || !token) { window.location.href = "/account/login/"; return; }
+  if (!id || !token) { window.location.href = "/account/login/"; return; }
 
   // โชว์สถานะกำลังโหลดคร่าว ๆ
   Object.values(els).forEach((el) => el && (el.textContent = "กำลังโหลด…"));
