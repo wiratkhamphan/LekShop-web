@@ -84,7 +84,7 @@
         </div>
       </section>
 
-      <!-- Products (Bootstrap version) -->
+      <!-- Products  -->
       <section id="page-products" style="display:none">
         <!-- Filters -->
         <div class="card mb-3">
@@ -162,6 +162,16 @@
         <!-- Table -->
         <div class="card">
           <div class="card-body">
+            <!-- View toggle (table/grid) -->
+            <div class="d-flex justify-content-end mb-2">
+              <div class="btn-group" role="group" aria-label="View">
+                <button type="button" class="btn btn-outline-secondary" id="p_view_table" title="ตาราง"><i class="fa-solid fa-table"></i></button>
+                <button type="button" class="btn btn-outline-secondary" id="p_view_grid" title="การ์ด"><i class="fa-solid fa-grip"></i></button>
+              </div>
+            </div>
+
+            <!-- Grid cards container -->
+            <div id="p_cards" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3" style="display:none"></div>
             <div class="table-responsive">
               <table class="table table-striped align-middle" id="p_tbl">
                 <thead>
@@ -351,5 +361,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
    <script src="/account/env/env.js"></script>
   <script defer src="app.js"></script>
+  <script defer src="product-grid.js"></script>
 </body>
 </html>

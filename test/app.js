@@ -132,23 +132,26 @@ const Products = (function(){
       const updated = p.updated_at ? new Date(p.updated_at).toLocaleString('th-TH',{hour12:false}) : '-';
       const pid = p.product_id || p.id || '';
       const imgSrc = img?.startsWith('http') ? img : (API + img);
+      const orig = p.original_price ? THB(p.original_price) : '';
+      const qty = Number(p.quantity ?? 0);
+      const qtyCls = qty<=0 ? 'bg-danger-subtle text-danger' : (qty<=10 ? 'bg-warning-subtle text-warning' : 'bg-success-subtle text-success');
       return `<tr>
-        <td><img class="thumb" src="${imgSrc}" alt=""></td>
+        <td><img class="p-thumb" src="${imgSrc}" alt=""></td>
         <td><span class="badge bg-dark">${pid}</span></td>
-        <td>${p.name||'-'}</td>
+        <td><div class="name-clip fw-semibold" title="${p.name||'-'}">${p.name||'-'}</div></td>
         <td>${p.brand||'-'}</td>
         <td>${p.category||'-'}</td>
-        <td class="text-center"><span class="badge badge-soft">${genderLabel(p.gender)}</span></td>
-        <td class="text-end">${THB(p.sell_price||0)}</td>
-        <td class="text-end">${p.quantity ?? 0}</td>
+        <td class="text-center"><span class="badge bg-secondary-subtle text-secondary">${genderLabel(p.gender)}</span></td>
+        <td class="text-end">${THB(p.sell_price||0)} ${orig? `<span class="text-muted text-decoration-line-through small ms-1">${orig}</span>`:''}</td>
+        <td class="text-end"><span class="badge ${qtyCls}">${qty}</span></td>
         <td class="text-center">
-          <div class="form-check form-switch d-inline-block">
+          <div class="form-check form-switch d-inline-block m-0 p-0">
             <input class="form-check-input" type="checkbox" ${p.recommended? 'checked':''}
               onchange="Products.toggleRecommended('${pid}', this.checked)">
           </div>
         </td>
         <td class="text-center">
-          <div class="form-check form-switch d-inline-block">
+          <div class="form-check form-switch d-inline-block m-0 p-0">
             <input class="form-check-input" type="checkbox" ${p.popular? 'checked':''}
               onchange="Products.togglePopular('${pid}', this.checked)">
           </div>
@@ -159,7 +162,7 @@ const Products = (function(){
             <button class="btn btn-sm btn-outline-secondary btn-icon" title="แก้ไข"
               onclick='Products.openEdit(${JSON.stringify(p)})'><i class="fa-solid fa-pen"></i></button>
             <button class="btn btn-sm btn-outline-primary btn-icon" title="ปรับจำนวน"
-              onclick="Products.openQty('${pid}', ${p.quantity ?? 0})"><i class="fa-solid fa-cubes-stacked"></i></button>
+              onclick="Products.openQty('${pid}', ${qty})"><i class="fa-solid fa-cubes-stacked"></i></button>
             <button class="btn btn-sm btn-outline-danger btn-icon" title="ลบ"
               onclick="Products.del('${pid}')"><i class="fa-solid fa-trash"></i></button>
           </div>

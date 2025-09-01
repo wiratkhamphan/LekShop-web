@@ -328,7 +328,11 @@
     async function loadPromotions(){
       makeSkeletonCards(els.promos, 4);
       try{
+<<<<<<< HEAD
         const list = await apiJSON(joinURL(API, '/promotions')) || [];
+=======
+        const list = await apiJSON(joinURL(API, '/api/promotions')) || [];
+>>>>>>> ca89a48e28bbf9c378834f2a63c7c5bb03f9a34b
         els.promos.innerHTML = list.map(promoCard).join('');
       }catch(e){ els.promos.innerHTML = `<div class="muted">โหลดโปรโมชั่นไม่สำเร็จ</div>`; }
     }
@@ -336,7 +340,11 @@
     async function loadPopular(){
       makeSkeletonCards(els.popular, 8);
       try{
+<<<<<<< HEAD
         const list = await apiJSON(joinURL(API, '/products/popular')) || [];
+=======
+        const list = await apiJSON(joinURL(API, '/api/products/popular')) || [];
+>>>>>>> ca89a48e28bbf9c378834f2a63c7c5bb03f9a34b
         els.popular.innerHTML = list.map(productCard).join('');
       }catch(e){ els.popular.innerHTML = `<div class="muted">โหลดรุ่นยอดนิยมไม่สำเร็จ</div>`; }
     }
@@ -344,7 +352,11 @@
     async function loadRecommended(){
       makeSkeletonCards(els.reco, 8);
       try{
+<<<<<<< HEAD
         const list = await apiJSON(joinURL(API, '/products/recommended')) || [];
+=======
+        const list = await apiJSON(joinURL(API, '/api/products/recommended')) || [];
+>>>>>>> ca89a48e28bbf9c378834f2a63c7c5bb03f9a34b
         els.reco.innerHTML = list.map(productCard).join('');
       }catch(e){ els.reco.innerHTML = `<div class="muted">โหลดสินค้าแนะนำไม่สำเร็จ</div>`; }
     }
@@ -352,7 +364,11 @@
     async function loadAll(q){
       makeSkeletonCards(els.all, 12);
       try{
+<<<<<<< HEAD
         const url = new URL(joinURL(API, '/products'), location.origin);
+=======
+        const url = new URL(joinURL(API, '/api/products'), location.origin);
+>>>>>>> ca89a48e28bbf9c378834f2a63c7c5bb03f9a34b
         if(q) url.searchParams.set('search', q);
         const list = await apiJSON(url.toString().replace(location.origin, '')) || [];
         els.all.innerHTML = list.map(productCard).join('');

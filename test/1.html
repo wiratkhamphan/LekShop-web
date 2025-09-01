@@ -366,7 +366,7 @@ del: (id) => `/admin/product/${id}` // DELETE
       const g = p.gender === 'unisex' ? 'ทุกเพศ' : (p.gender === 'men' ? 'ผู้ชาย' : 'ผู้หญิง');
       const updated = new Date(p.updated_at).toLocaleString('th-TH', { hour12:false });
       return `<tr>
-        <td><img class="thumb" src="${API}${img}" alt="img"></td>
+        <td><img class="thumb" src="${img}" alt="img"></td>
         <td><span class="badge bg-dark">${p.product_id}</span></td>
         <td>${p.name||'-'}</td>
         <td>${brand}</td>
